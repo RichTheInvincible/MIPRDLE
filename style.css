@@ -1,0 +1,354 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #000 url('images/background.jpeg') repeat;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+#gameContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    width: auto;
+    max-width: auto;
+    gap: 2%; /* Ensure consistent gap between all elements */
+}
+
+#hintsTable, #wrongAnswersTable, #rankTable {
+    width: auto;
+    min-height: 300px;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+}
+
+#searchContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#answerInput {
+    border-radius: 10px;
+    padding: 5px;
+    margin-right: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+}
+
+#resultsContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+#rating {
+    display: flex;
+    align-items: center;
+}
+
+.falco-image {
+    height: 40px; /* Match the height of the buttons */
+    margin-right: 5px;
+}
+
+#resultTitle {
+    margin-left: 20px;
+    background: linear-gradient(to bottom, black, yellow);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    height: 40px; /* Match the height of the buttons and images */
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#resultTitle.failure {
+    background: linear-gradient(to bottom, black, purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+}
+
+#resultTitle::before,
+#resultTitle::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%; /* Ensure the pseudo-elements match the height of the parent */
+    display: flex;
+    align-items: center;
+}
+
+#resultTitle::before {
+    color: #fff;
+    z-index: -2;
+    text-shadow: 
+        -1px -1px 0 #fff,  
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
+#resultTitle::after {
+    color: #000;
+    z-index: -3;
+    text-shadow: 
+        -2px -2px 0 #000,  
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        2px 2px 0 #000;
+}
+
+#hintsTable td {
+    white-space: nowrap;
+}
+
+/* Additional styling for tables and buttons */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #fff;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: rgba(7, 7, 151);
+    white-space: nowrap;
+}
+
+td {
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(to right, currentColor, currentColor);
+    transition: background-size 0.5s ease-in-out;
+}
+
+button {
+    background-color: rgba(7, 7, 151);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 1);
+}
+
+button:hover {
+    background-color:rgba(169, 6, 147, 1);
+}
+
+h1 {
+    text-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+}
+
+/* Styles for coloring rows */
+.wrong-answer {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+.correct-rank {
+    background-color: rgba(255, 191, 0, 0.7);
+}
+
+.hint-revealed {
+    background-color: rgba(128, 0, 128, 0.7);
+}
+
+/* Make the tag column as wide as the relation column */
+#rankTable th:nth-child(2),
+#rankTable td:nth-child(2) {
+    width: 50%;
+    white-space: nowrap;
+}
+
+#rankTable th:nth-child(1),
+#rankTable td:nth-child(1) {
+    text-align: right;
+}
+
+#rankTable th:nth-child(3),
+#rankTable td:nth-child(3) {
+    text-align: center;
+}
+
+/* Styles for the How to Play button and box */
+#howToPlayButton {
+    background-size: contain;
+    width: auto;
+    height: 40px; /* Match the height of the Falco images */
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: rgb(7, 7, 151);
+    padding: 10px 20px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#howToPlayButton:hover {
+    background-color:rgba(169, 6, 147, 1);
+}
+
+#howToPlayBox {
+    position: fixed;
+    border: 1px solid #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    display: none;
+    z-index: 1000;
+}
+
+#howToPlayBox h2 {
+    margin-top: 0;
+}
+
+#howToPlayBox button {
+    margin-top: 20px;
+}
+
+/* Styles for the result image */
+#resultImage {
+    width: auto;
+    max-width: 300px;
+    height: auto;
+    max-height: 300px;
+    margin-left: 2%; /* Ensure consistent gap between all elements */
+    object-fit: contain;
+    cursor: pointer; /* Change cursor to pointer to indicate clickability */
+}
+
+#resultImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    border-radius: 10px;
+}
+
+#resultImagePopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 90%;
+    z-index: 1001;
+    border: 1px solid #fff;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#resultImagePopup img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Styles for relation arrows */
+.relation-arrow {
+    text-shadow: 
+        1px 1px 5px #000;        
+}
+
+/* Styles for the dropdown message */
+#dropdownMessage {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+#dropdownMessage.hidden {
+    display: none;
+}
+
+/* Styles for the "Continue?" button */
+#newGame {
+    color: red;
+    background-color: transparent;
+    border: 3px solid red;
+    border-left: 0px;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold; /* Make the text bold */
+    position: relative;
+    transform: skew(-30deg, 0deg);
+    transform-origin: top right;
+}
+
+#newGame span {
+    display: inline-block;
+    transform: skew(30deg, 0deg); /* Skew the text back to 0 degrees */
+}
+
+#newGame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -3px; /* Adjust to align with the button */
+    width: 3px;
+    height: 100%;
+    background-color: red;
+}
+
+#newGame:hover {
+    background-color: rgba(255, 0, 0, 0.273);
+}
+
+@keyframes flip {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        background: white;
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+        background: var(--flip-color);
+    }
+}
+
+.flip {
+    animation: flip 500ms ease forwards;
+}
+
+@keyframes grow {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.grow {
+    animation: grow 500ms ease forwards;
+}

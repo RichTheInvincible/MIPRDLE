@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIPR Daily Puzzle</title>
+    <link rel="icon" href="images/MIMELEE.jpg" type="image/jpeg">
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>MIPR Puzzle - <span id="currentDate"></span></h1>
+    
+    <div id="searchContainer">
+        <label for="answerInput"></label>
+        <input list="answers" id="answerInput" oninput="validateInput()">
+        <datalist id="answers"></datalist>
+        <button id="submitButton" onclick="submitGuess()" disabled><b>GO!</b></button>
+        <button id="howToPlayButton" onclick="toggleHowToPlay()"><b>?</b></button>
+        <div id="resultsContainer">
+            <div id="rating">
+                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+            </div>
+            <h2 id="resultTitle" data-text=""></h2>
+        </div>
+    </div>
+    <button id="newGame" style="display: none;" onclick="startNewGame()"><span>Continue?</span></button>
+    <p id="feedback"></p>
+    <p id="dropdownMessage" class="hidden">Select from dropdown</p>
+    
+    <div id="gameContainer">
+        <div>
+            <table id="hintsTable">
+                <thead>
+                    <tr>
+                        <th>Hint</th>
+                        <th>Guesses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be populated by script.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <table id="rankTable">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Tag</th>
+                        <th>Relation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be populated by script.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <img id="resultImage" src="" alt="Result Image" style="display: none;" onclick="toggleResultImagePopup()">
+    </div>
+
+    <div id="resultImagePopup" onclick="toggleResultImagePopup()">
+        <img src="" alt="Result Image Popup">
+    </div>
+
+    <div id="howToPlayBox" class="hidden">
+        <h2>How to Play</h2>
+        <ul>
+            <li>Try to guess a PR Player on this PR. (Can be IM/HM)</li>
+            <li>Max 4 guesses.</li>
+            <li>Start knowing the PR season, and each guess unlocks a new hint.</li>
+            <li>If your guess is on this PR, it will tell you higher/lower.</li>
+            <li>Use the hints to narrow down the possible players.</li>
+            <li>If you run out of guesses, idk maybe try again tomorrow.</li>
+            <li>There's a new puzzle every day!</li>
+        </ul>
+
+        <h2>Features to be changed upon release</h2>
+        <ul>
+            <li>User will only have one try per day based on localstorage and cookies. this is disabled for testing.</li>
+            <li>Continue? will give you the puzzle from the previous day. this is only enabled for testing.</li>
+        </ul>
+        <button onclick="toggleHowToPlay()">Close</button>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const currentDateElement = document.getElementById("currentDate");
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date().toLocaleDateString(undefined, options);
+        currentDateElement.textContent = today;
+    });
+</script>
+</html>
