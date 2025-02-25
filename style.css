@@ -9,11 +9,12 @@ body {
 
 #gameContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center align the container */
     align-items: flex-start; /* Align items to the top */
-    width: auto;
-    max-width: auto;
+    width: 100%; /* Ensure the container takes full width */
+    max-width: 100%; /* Ensure the container takes full width */
     gap: 2%; /* Ensure consistent gap between all elements */
+    overflow-x: auto; /* Allow horizontal scrolling */
 }
 
 #hintsTable, #wrongAnswersTable, #rankTable {
@@ -112,8 +113,9 @@ body {
 /* Additional styling for tables and buttons */
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 100%; /* Ensure the table takes full width */
     margin-bottom: 20px;
+    overflow-x: auto; /* Allow horizontal scrolling */
 }
 
 th, td {

@@ -13,7 +13,7 @@
     
     <div id="searchContainer">
         <label for="answerInput"></label>
-        <input list="answers" id="answerInput" oninput="validateInput()">
+        <input list="answers" id="answerInput" oninput="validateInput()" pattern=".*\S.*">
         <datalist id="answers"></datalist>
         <button id="submitButton" onclick="submitGuess()" disabled><b>GO!</b></button>
         <button id="howToPlayButton" onclick="toggleHowToPlay()"><b>?</b></button>
@@ -31,8 +31,8 @@
     <p id="feedback"></p>
     <p id="dropdownMessage" class="hidden">Select from dropdown</p>
     
-    <div id="gameContainer">
-        <div>
+    <div id="gameContainer" style="text-align: center;">
+        <div style="overflow-x: auto; display: inline-block;"> <!-- Add overflow-x: auto to the container -->
             <table id="hintsTable">
                 <thead>
                     <tr>
@@ -46,7 +46,7 @@
             </table>
         </div>
 
-        <div>
+        <div style="overflow-x: auto; display: inline-block;"> <!-- Add overflow-x: auto to the container -->
             <table id="rankTable">
                 <thead>
                     <tr>
