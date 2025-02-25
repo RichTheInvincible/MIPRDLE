@@ -150,7 +150,10 @@ button:hover {
 }
 
 h1 {
-    text-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    background-color: rgba(7, 7, 151);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 1);
 }
 
 /* Styles for coloring rows */
@@ -351,4 +354,36 @@ h1 {
 
 .grow {
     animation: grow 500ms ease forwards;
+}
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 768px) {
+    #gameContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #searchContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #answerInput {
+        width: 90%;
+    }
+
+    button {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    #resultImage {
+        max-width: 90%;
+        max-height: 200px;
+    }
+
+    #howToPlayBox {
+        width: 90%;
+        max-width: 400px;
+    }
 }

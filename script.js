@@ -216,7 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     // add the wrong guess to the guesses column with red background
                     const guessCell = hintsTableBody.rows[guessCount].cells[1];
-                    guessCell.textContent = userGuess;
+                    const guessedTag = data.find(row => row[3].toLowerCase() === userGuess);
+                    guessCell.textContent = guessedTag ? guessedTag[3] : userGuess;
                     guessCell.classList.add("wrong-answer");
                     applyFlipAnimation(guessCell, "rgba(255, 0, 0, 0.7)", () => {
                         guessCell.style.backgroundColor = guessCell.style.getPropertyValue('--flip-color');
