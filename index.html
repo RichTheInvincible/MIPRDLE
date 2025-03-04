@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIPR Daily Puzzle</title>
     <link rel="icon" href="images/MIMELEE.jpg" type="image/jpeg">
-    <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    <h1>MIPR Puzzle - <span id="currentDate"></span></h1>
+    <h1>MIPRDLE - <span id="currentDate"></span></h1>
     
     <div id="searchContainer">
         <label for="answerInput"></label>
@@ -17,22 +17,27 @@
         <datalist id="answers"></datalist>
         <button id="submitButton" onclick="submitGuess()" disabled><b>GO!</b></button>
         <button id="howToPlayButton" onclick="toggleHowToPlay()"><b>?</b></button>
-        <div id="resultsContainer">
-            <div id="rating">
-                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
-                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
-                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
-                <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
-            </div>
-            <h2 id="resultTitle" data-text=""></h2>
-        </div>
+        <button id="randomButton" onclick="randomGame()"><b><span id="R">R</span><span id="A">A</span><span id="N">N</span><span id="D">D</span><span id="O">O</span><span id="M">M</span></b></button>
+        
+        <img id="smashBallImage" src="images/SmashBall.png" alt="Smash Ball" style="width: 40px; height: 40px; margin-left: 10px; display: none;">
+        <span id="smashBallText" style="display: none;"> X <span id="displayStreak"></span></span>
+        <span id="streakCount" style="display: none;"></span>
+        
     </div>
-    <button id="newGame" style="display: none;" onclick="startNewGame()"><span>Continue?</span></button>
-    <p id="feedback"></p>
+    <div id="resultsContainer" style="display: flex; align-items: center;">
+        <div id="rating">
+            <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+            <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+            <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+            <img src="images/Falco_SSBM.png" alt="Falco" class="falco-image">
+        </div>
+        <!--<h2 id="resultTitle" data-text=""></h2>-->
+        <button id="newGame" style="display: none;" onclick="startNewGame()"><div id="continueText"><span>Continue?</span></div></button>
+    </div>
     <p id="dropdownMessage" class="hidden">Select from dropdown</p>
     
     <div id="gameContainer" style="text-align: center;">
-        <div style="overflow-x: auto; display: inline-block;"> <!-- Add overflow-x: auto to the container -->
+        <div style="overflow-x: auto; display: inline-block;"> <!-- Add overflow-x: auto to the container so tables never get cutoff -->
             <table id="hintsTable">
                 <thead>
                     <tr>
@@ -87,13 +92,50 @@
         </ul>
         <button onclick="toggleHowToPlay()">Close</button>
     </div>
+
+    <div id="todaysResultsBox" class="hidden">
+        <h2>MIPRDLE - <span id="resultsDate"></span></h2>
+        <div id="resultsFalcoImages"></div> <!-- Container for Falco images -->
+        <div id="resultsMessage"></div>
+        <button onclick="toggleTodaysResultsBox()">Close</button>
+    </div>
+    <div id="randomResultsBox" class="hidden">
+        <h2>MIPRDLE - RANDOM</h2>
+        <div style="overflow-x: auto; display: inline-block;">
+        <table id="randomResultsTable">
+            <tbody>
+                <!-- Rows will be populated by script.js -->
+            </tbody>
+        </table>
+        </div>
+        
+        <div id="rrbContainer">
+            <button id="closeRandomBoxButton" onclick="toggleRandomResultsBox()">Close</button>
+            <img id="smashBallImage2" src="images/SmashBall.png" alt="Smash Ball" style="width: 40px; height: 40px; margin-left: 10px;">
+            <span id="smashBallText2"> X <span id="displayStreak2"></span></span>
+            <span id="streakCount2"></span>
+        </div>
+    </div>
+
+    <p id="feedback" style="display: none;"></p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentDateElement = document.getElementById("currentDate");
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString(undefined, options);
+            currentDateElement.textContent = today;
+
+            // Hide the random button if it's not today's puzzle
+            if (currentDateElement.textContent !== today) {
+                document.getElementById("randomButton").style.display = "none";
+            }
+
+            // Ensure the current streak value appears in the span with id displayStreak
+            const streakCount = localStorage.getItem("streakCount") || 0;
+            document.getElementById("displayStreak").textContent = streakCount;
+        });
+    </script>
+    <script defer src="script.js"></script>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const currentDateElement = document.getElementById("currentDate");
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const today = new Date().toLocaleDateString(undefined, options);
-        currentDateElement.textContent = today;
-    });
-</script>
 </html>

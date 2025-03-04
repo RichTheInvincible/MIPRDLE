@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     fetch("data.csv")
         .then(response => response.text())
@@ -6,19 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // extract header and data rows
             if (rows.length < 2) {
-                console.error("csv does not contain enough data.");
                 return;
             }
             
             const [header, ...data] = rows;
-            const hintElement = document.getElementById("hint");
+            //const hintElement = document.getElementById("hint");
             const answerInput = document.getElementById("answerInput");
             const dataList = document.getElementById("answers");
             const rankTableBody = document.getElementById("rankTable").querySelector("tbody");
             const hintsTableBody = document.getElementById("hintsTable").querySelector("tbody");
             const feedbackElement = document.getElementById("feedback");
             const resultsContainer = document.getElementById("resultsContainer");
-            const resultTitleElement = document.getElementById("resultTitle");
+            //const resultsMessageElement = document.getElementById("resultsMessage");
             const ratingElement = document.getElementById("rating");
             const resultImageElement = document.getElementById("resultImage");
             const resultImagePopup = document.getElementById("resultImagePopup");
@@ -26,8 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const dropdownMessage = document.getElementById("dropdownMessage");
             const newGameButton = document.getElementById("newGame");
             const currentDateElement = document.getElementById("currentDate");
-            
-            let previousDaysOffset = 1; // initialize the offset for previous days
+            //const smashBallImage = document.getElementById("smashBallImage");
+            //const randomButton = document.getElementById("randomButton");
+            const streakText = document.getElementById("streakText");
             
             // hash function to determine the index based on the date
             function hashDate(date) {
@@ -43,18 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // determine today's index using the hash function
             const todayIndex = hashDate(new Date());
-            console.log(`today index: ${todayIndex}, data length: ${data.length}`); // log todayIndex and data.length
             const todayRow = data[todayIndex] || [];
-            console.log(todayRow); // ensure this line is executed
             
             // ensure the row has enough columns before accessing
             if (todayRow.length < 7) {
-                console.error("today's row is missing required columns.");
                 return;
             }
             
             let currentRow = todayRow; // track the current row being used
-            
+            console.log(todayRow); //for cheating
             // set initial hints for today
             const hintCategories = ["PR Season:", "Most Recent Appearance:", "First Appearance:", "Appearances:"];
             const hintValues = [todayRow[1], "", "", ""];
@@ -81,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.value = answer;
                 dataList.appendChild(option);
             });
-            
+
             // populate rank table with ranks only
             function populateRankTable(row) {
                 const sameNumberRows = data.filter(dataRow => dataRow[0] === row[0]);
@@ -158,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (guessCount >= maxGuesses) {
                     showResults(false, guessCount);
+                    submitButton.disabled = true;
                     return;
                 }
                 
@@ -166,13 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (userGuess === correctAnswer) {
                     // localStorage.setItem("lastGuessDate", today);
                     // setCookie("lastGuessDate", today, 1);
-                    showResults(true, guessCount, correctAnswer);
+                    localStorage.setItem("correctAnswerTag", currentRow[3]);
+                    showResults(true, guessCount, correctAnswer, maxGuesses, currentRow);
                     return;
                 }
                 
                 // find the guessed row
                 const guessedRow = data.find(row => row[3].toLowerCase() === userGuess && row[0] === currentRow[0]);
-                console.log(guessedRow);
                 if (guessedRow) {
                     const correctRank = currentRow[2] === "HM" ? 30 : currentRow[2] === "IM" ? 31 : parseInt(currentRow[2], 10);
                     const guessedRank = guessedRow[2] === "HM" ? 30 : guessedRow[2] === "IM" ? 31 : parseInt(guessedRow[2], 10);
@@ -245,21 +244,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (guessCount >= maxGuesses) {
                     // localStorage.setItem("lastGuessDate", today);
                     // setCookie("lastGuessDate", today, 1);
-                    showResults(false, guessCount, correctAnswer);
+                    
+                    showResults(false, guessCount, correctAnswer, maxGuesses, currentRow);
                 }
-            };
-
+    };
+            
+            
             function showResults(success, guessCount, correctAnswer) {
                 resultsContainer.style.display = "flex";
-                resultTitleElement.textContent = success ? "SUCCESS!" : "FAILURE";
-                resultTitleElement.setAttribute("data-text", success ? "SUCCESS!" : "FAILURE");
-                if (!success) {
-                    resultTitleElement.classList.add("FAILURE");
-                } else {
-                    resultTitleElement.classList.remove("FAILURE");
-                }
+                //Move remaining Falco images to the results box before clearing the rating container
+                const resultsFalcoImages = document.getElementById("resultsFalcoImages");
+                resultsFalcoImages.innerHTML = ""; // Clear any existing images
+                const remainingFalcoImages = document.querySelectorAll("#rating .falco-image");
+                console.log("Remaining Falco images:", remainingFalcoImages.length); // Log the number of remaining Falco images
+                remainingFalcoImages.forEach(img => {
+                resultsFalcoImages.appendChild(img);
+                });
+
                 ratingElement.innerHTML = "";
                 const rating = success ? maxGuesses - guessCount : 0;
+                console.log("showResults-success: ", success);
                 for (let i = 0; i < rating; i++) {
                     const img = document.createElement("img");
                     img.src = "images/Falco_SSBM.png";
@@ -317,23 +321,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // show the "continue?" button
                 newGameButton.style.display = "block";
+
+
+                // Add the correct answer tag and season for random puzzles
+                if (currentDateElement.textContent === "RANDOM") {
+                    console.log("streak: ", localStorage.getItem("streak"));
+
+                    // Retrieve existing arrays
+                    let streakArrayTags = JSON.parse(localStorage.getItem("streakArrayTags")) || [];
+                    let streakArraySeasons = JSON.parse(localStorage.getItem("streakArraySeasons")) || [];
+                
+                    // Convert streak to a number (default to 0 if null)
+                    let streakIndex = parseInt(localStorage.getItem("streak"), 10) || 0;
+                
+                    // Append the new correct answer
+                    streakArrayTags.push(currentRow[3]);
+                    streakArraySeasons.push(currentRow[1]);
+                
+                    // Store updated arrays back in localStorage
+                    localStorage.setItem("streakArrayTags", JSON.stringify(streakArrayTags));
+                    localStorage.setItem("streakArraySeasons", JSON.stringify(streakArraySeasons));
+                
+                    console.log("Updated streakArrayTags:", localStorage.getItem("streakArrayTags"));
+                    console.log("Updated streakArraySeasons:", localStorage.getItem("streakArraySeasons"));
+                
+                    // Update streak count in localStorage
+                    localStorage.setItem("streak", streakIndex + 1);
+                }
+
+                // Show the today's results box if today's puzzle is finished
+                console.log(currentDateElement.textContent);
+                if (currentDateElement.textContent !== "RANDOM") {
+                    console.log("showResults-success: ", success);
+                    return toggleTodaysResultsBox(success), success;
+                }else{
+                    console.log("showResults-success: ", success);
+                    return toggleRandomResultsBox(success), updateStreak(success), success;
+                    
+                }
+                
             }
 
-            window.startNewGame = function () {
-                loadPreviousPuzzle();
-            };
+            window.randomGame = function(success) {
+                const currentTime = Date.now(); // current time in milliseconds
+                const randomIndex = currentTime % data.length;
+                const randomRow = data[randomIndex] || [];
 
-            function loadPreviousPuzzle() {
-                const previousDate = new Date();
-                previousDate.setDate(previousDate.getDate() - previousDaysOffset);
-                const previousIndex = hashDate(previousDate);
-                console.log(`previous index: ${previousIndex}, data length: ${data.length}`); // log previousIndex and data.length
-                const previousRow = data[previousIndex] || [];
-                console.log(previousRow); // ensure this line is executed
-                
+                //reenable the submit button when a puzzle is started
+                const submitButton = document.getElementById("submitButton");
+                submitButton.disabled = false;
+
+                console.log("randomGame-success: ", success);
+
                 // ensure the row has enough columns before accessing
-                if (previousRow.length < 7) {
-                    console.error("previous day's row is missing required columns.");
+                if (randomRow.length < 7) {
                     return;
                 }
 
@@ -341,8 +382,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 hintsTableBody.innerHTML = "";
                 rankTableBody.innerHTML = "";
 
-                // set initial hints for the previous day's puzzle
-                const hintValues = [previousRow[1], "", "", ""];
+                // set initial hints for the random puzzle
+                const hintValues = [randomRow[1], "", "", ""];
                 hintCategories.forEach((category, index) => {
                     const hintRow = document.createElement("tr");
                     const hintTd = document.createElement("td");
@@ -353,29 +394,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     hintRow.appendChild(guessTd);
                     hintsTableBody.appendChild(hintRow);
                 });
-
+                console.log(randomRow); //for cheating
                 // set the first hint cell to always be purple and apply flip animation
                 const firstHintCell = hintsTableBody.rows[0].cells[0];
                 firstHintCell.classList.add("hint-revealed");
                 applyFlipAnimation(firstHintCell, "rgba(128, 0, 128, 0.7)");
 
-                // populate rank table with ranks and blank tags for the previous day's puzzle
-                populateRankTable(previousRow);
+                // populate rank table with ranks and blank tags for the random puzzle
+                populateRankTable(randomRow);
 
                 // reset guess count and other elements
                 guessCount = 0;
-                feedbackElement.textContent = "";
+                feedbackElement.textContent = ""; // Clear any existing feedback messages
                 resultsContainer.style.display = "none";
                 resultImageElement.style.display = "none";
                 newGameButton.style.display = "none"; // hide the button until the puzzle is solved
 
-                // update the date in the title
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                currentDateElement.textContent = previousDate.toLocaleDateString(undefined, options);
+                // update the title to "RANDOM"
+                currentDateElement.textContent = "RANDOM";
 
-                // increment the offset for the next previous day
-                previousDaysOffset++;
-                currentRow = previousRow; // update the current row to the previous row
+                currentRow = randomRow; // update the current row to the random row
 
                 // reset falco images
                 ratingElement.innerHTML = "";
@@ -386,13 +424,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     ratingElement.appendChild(img);
                 }
 
-                // update hints for the previous day's puzzle
+                // update hints for the random puzzle
                 hints.length = 0;
                 hints.push(
-                    { category: "Most Recent Appearance:", hint: previousRow[4] },
-                    { category: "First Appearance:", hint: previousRow[5] },
-                    { category: "Appearances:", hint: previousRow[6] }
+                    { category: "Most Recent Appearance:", hint: randomRow[4] },
+                    { category: "First Appearance:", hint: randomRow[5] },
+                    { category: "Appearances:", hint: randomRow[6] }
                 );
+
+                // Replace the random button with the Smash Ball image and show the streak text
+                document.getElementById("randomButton").style.display = "none";
+                document.getElementById("smashBallImage").style.display = "block";
+                const streak = localStorage.getItem("randomStreak") || 0;
+                document.getElementById("smashBallText").style.display = "inline";
+                document.getElementById("displayStreak").textContent = streak;
+
+                if (streakText) {
+                    const streak = localStorage.getItem("randomStreak") || 0;
+                    streakText.textContent = streak;
+                }
+
+                // Ensure the results container is displayed
+                resultsContainer.style.display = "flex";
             }
 
             // function to apply flip animation
@@ -404,21 +457,44 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (callback) callback();
                 }, 500);
             }
+
+            // Initialize the streak count
+            document.getElementById("streakCount").textContent = localStorage.getItem("randomStreak") || 0;
+            document.getElementById("displayStreak").textContent = localStorage.getItem("randomStreak") || 0;
+            
         })
         .catch(error => console.error("error loading csv:", error));
-});
+    });
 
+
+//Success! Failure message in the todaysresultsbox
+function successFailure(success) {
+    const resultsMessageElement = document.getElementById("resultsMessage");
+    resultsMessageElement.textContent = success ? "SUCCESS!" : "FAILURE";
+    resultsMessageElement.setAttribute("resultsMessage", success ? "SUCCESS!" : "FAILURE");
+                if (!success) {
+                    resultsMessageElement.classList.add("failure");
+                    console.log("successFailure-addfail: ", success);
+                } else {
+                    resultsMessageElement.classList.remove("failure");
+                    resultsMessageElement.classList.add("success");
+                    console.log("successFailure-removefail:", success);
+                }
+}
+
+//How to play box popup
 function toggleHowToPlay() {
     const howToPlayBox = document.getElementById("howToPlayBox");
     if (howToPlayBox.style.display === "none" || !howToPlayBox.style.display) {
         howToPlayBox.style.display = "block";
-        howToPlayBox.classList.add("grow");
+        howToPlayBox.classList.add("grow");   
     } else {
         howToPlayBox.style.display = "none";
         howToPlayBox.classList.remove("grow");
     }
 }
 
+//PR graphics popup
 function toggleResultImagePopup() {
     const resultImagePopup = document.getElementById("resultImagePopup");
     if (resultImagePopup.style.display === "none" || !resultImagePopup.style.display) {
@@ -430,7 +506,135 @@ function toggleResultImagePopup() {
     }
 }
 
-function startNewGame() {
-    // placeholder function for new game functionality
-    console.log("new game started");
+// Add a function to start a new random game when the "Continue?" button is clicked
+function startNewGame(success) {
+    window.randomGame();
+    if (randomResultsBox.style.display !== "none" || !randomResultsBox.style.display) {
+        randomResultsBox.style.display = "none";
+        randomResultsBox.classList.remove("grow");
+                        //if the last guess was wrong clear the correct answers from localstorage
+        success = localStorage.getItem("success");
+        console.log("startnewgamesuccess: ", success);
+        if (success === false || success === "false") {
+            localStorage.setItem("streakArrayTags", JSON.stringify([]));
+            localStorage.setItem("streakArraySeasons", JSON.stringify([]));
+        } 
+    }
+}
+
+function updateStreak(success) {
+    const streak = localStorage.getItem("randomStreak") || 0;
+     
+    if (success) {
+        localStorage.setItem("randomStreak", parseInt(streak, 10) + 1);
+        
+    } else {
+        localStorage.setItem("randomStreak", 0);
+        
+    }
+}
+
+function toggleTodaysResultsBox(success) {
+    const todaysResultsBox = document.getElementById("todaysResultsBox");
+    //const resultsFalcoImages = document.getElementById("resultsFalcoImages");
+    //const ratingElement = document.getElementById("rating");
+
+    if (todaysResultsBox.style.display === "none" || !todaysResultsBox.style.display) {
+        // Move remaining Falco images to the results box
+        //const remainingFalcoImages = document.querySelectorAll("#rating .falco-image");
+        //console.log("toggleTodaysResultsBox-remainingFalcoImages: ", remainingFalcoImages);
+        //remainingFalcoImages.forEach(img => {
+        //resultsFalcoImages.appendChild(img);
+        //});
+        successFailure(success); // Success! Failure message in the todaysresults
+        // Set the date in the results box
+        const resultsDateElement = document.getElementById("resultsDate");
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date().toLocaleDateString(undefined, options);
+        resultsDateElement.textContent = today;
+
+        todaysResultsBox.style.display = "block";
+        todaysResultsBox.classList.add("grow");
+    } else {
+        todaysResultsBox.style.display = "none";
+        todaysResultsBox.classList.remove("grow");
+    }
+}
+
+
+function toggleRandomResultsBox(success) {
+    const randomResultsBox = document.getElementById("randomResultsBox");
+    const randomResultsTable = document.getElementById("randomResultsTable").querySelector("tbody");
+    if (randomResultsBox.style.display === "none" || !randomResultsBox.style.display) {
+        localStorage.setItem("success", success);
+        console.log("toggleRandomResultsBox-success1: ", success);
+        // Retrieve and parse the arrays properly
+    let streakArrayTags = localStorage.getItem("streakArrayTags");
+    console.log(localStorage.getItem("streakArrayTags"));
+    if (!streakArrayTags) {
+        streakArrayTags = []; // Default to an empty array if null
+    } else {
+    try {
+        streakArrayTags = JSON.parse(streakArrayTags);
+        if (!Array.isArray(streakArrayTags)) {
+            streakArrayTags = []; // Ensure it's an array
+        }
+    } catch (error) {
+        console.error("Error parsing streakArrayTags from localStorage:", error);
+        streakArrayTags = []; // Handle corrupted data
+        }
+    }
+    
+    let streakArraySeasons = JSON.parse(localStorage.getItem("streakArraySeasons")) || [];
+
+    console.log("streakArrayTags:", streakArrayTags);
+    console.log("streakArraySeasons:", streakArraySeasons);
+    
+    // Clear previous table content
+    randomResultsTable.innerHTML = "";
+
+    // Populates the table with correct guesses and the first wrong guess
+    streakArrayTags.forEach((tag, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${tag}</td><td>${streakArraySeasons[index]}</td>`;
+        randomResultsTable.appendChild(row);
+        randomResultsTable.rows[index].style.backgroundColor = "rgba(0, 255, 0, 0.7)";
+    });
+
+    //makes the last row row red if the last guess was wrong
+    if (success === false || success === "false") {
+        const lastRow = randomResultsTable.rows[randomResultsTable.rows.length - 1];
+        lastRow.style.backgroundColor = "rgba(255, 0, 0, 0.7)"; 
+    }
+
+    console.log(streakArrayTags, Array.isArray(streakArrayTags)); 
+
+     // Replace the random button with the Smash Ball image and show the streak text
+     document.getElementById("smashBallImage2").style.display = "block";
+     const streak = localStorage.getItem("randomStreak") || 0;
+     document.getElementById("smashBallText2").style.display = "inline";
+
+     //fake update the smashball streak just for the resultsbox
+     if (success === true || success === "true") {
+     var streak2 = Number(localStorage.getItem("randomStreak")) + 1;
+     document.getElementById("displayStreak2").textContent = streak2;
+     }
+     else {
+        var streak2 = Number(localStorage.getItem("randomStreak")) || 0;
+        document.getElementById("displayStreak2").textContent = streak2;
+     }
+    // Show/hide the results box
+        randomResultsBox.style.display = "block";
+        randomResultsBox.classList.add("grow");
+    } else {
+        success = localStorage.getItem("success");
+        console.log("randomresultsbox success: ", success);
+        if (success === false || success === "false") {
+            localStorage.setItem("streakArrayTags", JSON.stringify([]));
+            localStorage.setItem("streakArraySeasons", JSON.stringify([]));
+        }
+        randomResultsBox.style.display = "none";
+        randomResultsBox.classList.remove("grow");
+       
+    }
 }

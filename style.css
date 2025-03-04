@@ -52,59 +52,9 @@ body {
 .falco-image {
     height: 40px; /* Match the height of the buttons */
     margin-right: 5px;
+    margin-bottom: 20px;
 }
 
-#resultTitle {
-    margin-left: 20px;
-    background: linear-gradient(to bottom, black, yellow);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    height: 40px; /* Match the height of the buttons and images */
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-#resultTitle.failure {
-    background: linear-gradient(to bottom, black, purple);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-}
-
-#resultTitle::before,
-#resultTitle::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%; /* Ensure the pseudo-elements match the height of the parent */
-    display: flex;
-    align-items: center;
-}
-
-#resultTitle::before {
-    color: #fff;
-    z-index: -2;
-    text-shadow: 
-        -1px -1px 0 #fff,  
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff;
-}
-
-#resultTitle::after {
-    color: #000;
-    z-index: -3;
-    text-shadow: 
-        -2px -2px 0 #000,  
-        2px -2px 0 #000,
-        -2px 2px 0 #000,
-        2px 2px 0 #000;
-}
 
 #hintsTable td {
     white-space: nowrap;
@@ -150,6 +100,7 @@ button {
 button:hover {
     background-color:rgba(169, 6, 147, 1);
 }
+
 
 h1 {
     background-color: rgba(7, 7, 151);
@@ -209,6 +160,119 @@ h1 {
     background-color:rgba(169, 6, 147, 1);
 }
 
+#submitButton{
+    background-size: contain;
+    width: auto;
+    height: 40px; /* Match the height of the Falco images */
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(7, 7, 151);
+    padding: 10px 20px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#submitButton:hover {
+    background-color:rgba(169, 6, 147, 1);
+}
+
+/* Styles for the Smash Ball image */
+#smashBallImage {
+    display: none;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+#smashBallText{
+    color: silver;
+    font-weight: bold;
+}
+#displayStreak{
+    margin-left: 10px;
+    color: silver;
+    font-weight: bold;
+}
+
+#rrbContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Styles for the Random button */
+#randomButton {
+    background-size: contain;
+    width: auto;
+    height: 60px; /* Match the height of the Falco images */
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-left: 15px;
+    padding: 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(92, 77, 77);
+    font-family: fantasy;
+    color: #000000;
+    border: rgb(113, 111, 111) 1px solid;
+    outline: rgb(92, 77, 77) 5px solid;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+#randomButton span {
+    display: inline-block;
+    position: relative;
+}
+
+#randomButton span:nth-child(1) {
+    top: -2px;
+}
+
+#randomButton span:nth-child(2) {
+    top: -1px;
+}
+
+#randomButton span:nth-child(3) {
+    top: 0px;
+}
+
+#randomButton span:nth-child(4) {
+    top: 1px;
+}
+
+#randomButton span:nth-child(5) {
+    top: 2px;
+}
+
+#randomButton span:nth-child(6) {
+    top: 3px;
+}
+
+#randomButton:hover {
+    animation: oscillateOutline 0.25s infinite; /* Apply the animation on hover */
+}
+
+@keyframes oscillateOutline {
+    0% {
+        outline-color: rgb(100, 88, 88);
+    }
+    50% {
+        outline-color: red;
+    }
+    100% {
+        outline-color: rgb(100, 88, 88);
+    }
+}
+
 #howToPlayBox {
     position: fixed;
     border: 1px solid #fff;
@@ -230,6 +294,131 @@ h1 {
 
 #howToPlayBox button {
     margin-top: 20px;
+    box-shadow: none;
+}
+
+/* Styles for the today's results box */
+#randomResultsBox {
+    position: fixed;
+    border: 1px solid #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 1);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    display: none;
+    max-height: 50%;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+#randomResultsBox h2 {
+    margin-top: 0;
+}
+
+/* width */
+#randomResultsBox::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  #randomResultsBox::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  #randomResultsBox::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  #randomResultsBox::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+#smashBallImage2 {
+    margin-right: 10px;
+    align-items: left;
+    margin-left: 10px;
+}
+
+#smashBallText2 {
+    color: silver;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+#displayStreak2{
+    margin-left: 10px;
+}
+
+#closeRandomBoxButton {
+    box-shadow: none;
+    display: flex;
+    align-items: left;
+}
+
+/* Styles for the today's results box */
+#todaysResultsBox {
+    position: fixed;
+    border: 1px solid #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 1);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(169, 6, 147, 0.8);
+    display: none;
+    z-index: 1000;
+}
+
+#todaysResultsBox h2 {
+    margin-top: 0;
+}
+
+#todaysResultsBox button {
+    margin-top: 20px;
+    box-shadow: none;
+}
+
+/* Styles for the success/fail message */
+#resultsMessage {
+    margin-top: 20px;
+    font-size: 48px; /* Double the font size */
+    font-weight: bold;
+    text-align: center;
+    color: transparent; /* Make the text transparent */
+}
+
+/* Success class */
+#resultsMessage.success {
+    background: linear-gradient(to bottom, black, gold); /* Gold gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position:relative;  
+    filter: 
+        drop-shadow( 1px  0px 0px rgb(255, 255, 255)) 
+        drop-shadow(-1px  0px 0px rgb(255, 255, 255))
+        drop-shadow( 0px  1px 0px rgb(255, 255, 255)) 
+        drop-shadow( 0px -1px 0px rgb(255, 255, 255));
+}
+
+/* Failure class */
+#resultsMessage.failure {
+    background: linear-gradient(to bottom, black, purple); /* Purple gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position:relative;  
+    filter: 
+        drop-shadow( 1px  0px 0px rgb(255, 255, 255)) 
+        drop-shadow(-1px  0px 0px rgb(255, 255, 255))
+        drop-shadow( 0px  1px 0px rgb(255, 255, 255)) 
+        drop-shadow( 0px -1px 0px rgb(255, 255, 255));
 }
 
 /* Styles for the result image */
@@ -298,12 +487,14 @@ h1 {
     border-radius: 0;
     box-shadow: none;
     padding: 10px 20px;
+    margin-bottom: 20px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold; /* Make the text bold */
     position: relative;
     transform: skew(-30deg, 0deg);
     transform-origin: top right;
+    margin-left: 20px;
 }
 
 #newGame span {
@@ -387,5 +578,18 @@ h1 {
     #howToPlayBox {
         width: 90%;
         max-width: 400px;
+    }
+    #todaysResultsBox {
+        width: 90%;
+        max-width: 400px;
+    }
+    #randomResultsBox {
+        width: 90%;
+        max-width: 400px;
+        max-height: 50%;
+        overflow-y: auto;
+    }
+    #randomResultsBox button{
+        max-width: 40%;
     }
 }
