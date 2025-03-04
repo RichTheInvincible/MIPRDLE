@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // const cookieLastGuessDate = getCookie("lastGuessDate");
             // const today = new Date().toDateString();
             // if (lastGuessDate === today || cookieLastGuessDate === today) {
-            //     feedbackElement.textContent = "you have already guessed today. please come back tomorrow.";
+            //     feedbackElement.textContent = "You have already guessed today. please come back tomorrow.";
             //     answerInput.disabled = true;
             //     return;
             // }
@@ -519,6 +519,10 @@ function startNewGame(success) {
             localStorage.setItem("streakArrayTags", JSON.stringify([]));
             localStorage.setItem("streakArraySeasons", JSON.stringify([]));
         } 
+    }
+    if (todaysResultsBox.style.display !== "none" || !todaysResultsBox.style.display) {
+        todaysResultsBox.style.display = "none";
+        todaysResultsBox.classList.remove("grow");
     }
 }
 
