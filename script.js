@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 { category: "First Appearance:", hint: todayRow[5] },
                 { category: "Appearances:", hint: todayRow[6] }
             ];
+            
 
             // helper functions for cookies
             function setCookie(name, value, days) {
@@ -235,11 +236,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 
                 // remove a falco image
-                const falcoImages = document.querySelectorAll(".falco-image");
+                const falcoImages = document.querySelectorAll("#rating .falco-image");
+                console.log("Remaining Falco images:", falcoImages.length); // Log the number of remaining Falco images
                 if (falcoImages.length > 0) {
                     falcoImages[falcoImages.length - 1].remove();
                 }
-                
+                console.log("Remaining Falco images2:", falcoImages.length); // Log the number of remaining Falco images
+
                 guessCount++;
                 if (guessCount >= maxGuesses) {
                     // localStorage.setItem("lastGuessDate", today);
@@ -251,19 +254,21 @@ document.addEventListener("DOMContentLoaded", () => {
             
             
             function showResults(success, guessCount, correctAnswer) {
+                
                 resultsContainer.style.display = "flex";
                 //Move remaining Falco images to the results box before clearing the rating container
                 const resultsFalcoImages = document.getElementById("resultsFalcoImages");
                 resultsFalcoImages.innerHTML = ""; // Clear any existing images
                 const remainingFalcoImages = document.querySelectorAll("#rating .falco-image");
-                console.log("Remaining Falco images:", remainingFalcoImages.length); // Log the number of remaining Falco images
+                
+
                 remainingFalcoImages.forEach(img => {
                 resultsFalcoImages.appendChild(img);
                 });
-
+                console.log("showresults - guesscount:", guessCount);
                 ratingElement.innerHTML = "";
                 const rating = success ? maxGuesses - guessCount : 0;
-                console.log("showResults-success: ", success);
+                
                 for (let i = 0; i < rating; i++) {
                     const img = document.createElement("img");
                     img.src = "images/Falco_SSBM.png";
@@ -284,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     resultImageElement.style.display = "none";
                 }
-
+                
                 // preserve existing styles and arrows
                 const preservedRows = Array.from(rankTableBody.rows).map(row => {
                     const clonedRow = row.cloneNode(true);
@@ -319,6 +324,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
 
+                //disable submit button until a new game is started
+                const submitButton = document.getElementById("submitButton");
+                submitButton.disabled = true;
+
                 // show the "continue?" button
                 newGameButton.style.display = "block";
 
@@ -349,6 +358,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     localStorage.setItem("streak", streakIndex + 1);
                 }
 
+                //reset guesscount
+                guessCount = 0;
                 // Show the today's results box if today's puzzle is finished
                 console.log(currentDateElement.textContent);
                 if (currentDateElement.textContent !== "RANDOM") {
@@ -414,16 +425,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentDateElement.textContent = "RANDOM";
 
                 currentRow = randomRow; // update the current row to the random row
+                
+                 //reset falco images
 
-                // reset falco images
+                guessCount = 0;
+                const ratingElement = document.getElementById("rating");
                 ratingElement.innerHTML = "";
-                for (let i = 0; i < maxGuesses; i++) {
-                    const img = document.createElement("img");
-                    img.src = "images/Falco_SSBM.png";
-                    img.classList.add("falco-image");
-                    ratingElement.appendChild(img);
-                }
+                console.log("random - ratingElement2: ", ratingElement.length);
+                
+                setTimeout(() => {
+                    for (let i = 0; i < maxGuesses; i++) {
+                        const img = document.createElement("img");
+                        img.src = "images/Falco_SSBM.png";
+                        img.classList.add("falco-image");
+                        ratingElement.appendChild(img);
+                    }
+                }, 50);
 
+                console.log("random - ratingElement3: ", ratingElement.length);
                 // update hints for the random puzzle
                 hints.length = 0;
                 hints.push(
@@ -464,6 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
         })
         .catch(error => console.error("error loading csv:", error));
+        
     });
 
 
@@ -508,6 +528,7 @@ function toggleResultImagePopup() {
 
 // Add a function to start a new random game when the "Continue?" button is clicked
 function startNewGame(success) {
+
     window.randomGame();
     if (randomResultsBox.style.display !== "none" || !randomResultsBox.style.display) {
         randomResultsBox.style.display = "none";
