@@ -35,7 +35,7 @@
         <button id="newGame" style="display: none;" onclick="startNewGame()"><div id="continueText"><span>Continue?</span></div></button>
     </div>
     <p id="dropdownMessage" class="hidden">Select from dropdown</p>
-    
+    <p id="feedback" class="hidden">You already played today's puzzle. Try the RANDOM button if you want to keep playing.</p>
     <div id="gameContainer" style="text-align: center;">
         <div style="overflow-x: auto; display: inline-block;"> <!-- Add overflow-x: auto to the container so tables never get cutoff -->
             <table id="hintsTable">
@@ -116,8 +116,6 @@
             <span id="streakCount2"></span>
         </div>
     </div>
-
-    <p id="feedback" style="display: none;"></p>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {

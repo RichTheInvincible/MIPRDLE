@@ -140,6 +140,11 @@ h1 {
     text-align: center;
 }
 
+#feedback {
+    display: none;
+    color: red;
+}
+
 /* Styles for the How to Play button and box */
 #howToPlayButton {
     background-size: contain;

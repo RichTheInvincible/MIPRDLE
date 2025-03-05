@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     fetch("data.csv")
         .then(response => response.text())
@@ -11,14 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             const [header, ...data] = rows;
-            //const hintElement = document.getElementById("hint");
             const answerInput = document.getElementById("answerInput");
             const dataList = document.getElementById("answers");
             const rankTableBody = document.getElementById("rankTable").querySelector("tbody");
             const hintsTableBody = document.getElementById("hintsTable").querySelector("tbody");
             const feedbackElement = document.getElementById("feedback");
             const resultsContainer = document.getElementById("resultsContainer");
-            //const resultsMessageElement = document.getElementById("resultsMessage");
             const ratingElement = document.getElementById("rating");
             const resultImageElement = document.getElementById("resultImage");
             const resultImagePopup = document.getElementById("resultImagePopup");
@@ -26,8 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const dropdownMessage = document.getElementById("dropdownMessage");
             const newGameButton = document.getElementById("newGame");
             const currentDateElement = document.getElementById("currentDate");
-            //const smashBallImage = document.getElementById("smashBallImage");
-            //const randomButton = document.getElementById("randomButton");
             const streakText = document.getElementById("streakText");
             
             // hash function to determine the index based on the date
@@ -131,16 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
-            // check if the user has already guessed today
-            // const lastGuessDate = localStorage.getItem("lastGuessDate");
-            // const cookieLastGuessDate = getCookie("lastGuessDate");
-            // const today = new Date().toDateString();
-            // if (lastGuessDate === today || cookieLastGuessDate === today) {
-            //     feedbackElement.textContent = "You have already guessed today. please come back tomorrow.";
-            //     answerInput.disabled = true;
-            //     return;
-            // }
-
             window.validateInput = function () {
                 const userGuess = answerInput.value.trim().toLowerCase();
                 const isValid = uniqueAnswers.map(answer => answer.toLowerCase()).includes(userGuess);
@@ -155,19 +140,37 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
                 
+                // Check if it's today's puzzle
+                const today = new Date().toDateString();
+                if (currentDateElement.textContent !== "RANDOM") {
+                console.log("currentdateelement: ", currentDateElement);
+                // If already attempted today, prevent further guesses
+                console.log("lastguessdate: ", localStorage.getItem("lastGuessDate"));
+                console.log("today", today);
+                if (localStorage.getItem("lastGuessDate") === today) {
+                    feedbackElement.style.display = "block";
+                return;
+                    } else{
+                    feedbackElement.style.display = "none";
+                    }
+                }
+
                 if (guessCount >= maxGuesses) {
                     showResults(false, guessCount);
+                    if (currentDateElement.textContent !== "RANDOM") {
+                        localStorage.setItem("lastGuessDate", today); // Mark today's puzzle as played
+                    }
                     submitButton.disabled = true;
                     return;
                 }
                 
                 const correctAnswer = currentRow[3].toLowerCase();
-                
                 if (userGuess === correctAnswer) {
-                    // localStorage.setItem("lastGuessDate", today);
-                    // setCookie("lastGuessDate", today, 1);
                     localStorage.setItem("correctAnswerTag", currentRow[3]);
                     showResults(true, guessCount, correctAnswer, maxGuesses, currentRow);
+                    if (currentDateElement.textContent !== "RANDOM") {
+                        localStorage.setItem("lastGuessDate", today); // Mark today's puzzle as played
+                    }
                     return;
                 }
                 
@@ -244,10 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Remaining Falco images2:", falcoImages.length); // Log the number of remaining Falco images
 
                 guessCount++;
-                if (guessCount >= maxGuesses) {
-                    // localStorage.setItem("lastGuessDate", today);
-                    // setCookie("lastGuessDate", today, 1);
-                    
+                if (guessCount >= maxGuesses) {                 
                     showResults(false, guessCount, correctAnswer, maxGuesses, currentRow);
                 }
     };
