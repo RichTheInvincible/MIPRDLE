@@ -1,4 +1,6 @@
 
+# WHY ARE YOU HERE?? well here's some info i guess.
+
 # MIPR Daily Puzzle
 
 ## Description

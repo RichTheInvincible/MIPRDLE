@@ -74,22 +74,23 @@
     </div>
 
     <div id="howToPlayBox" class="hidden">
-        <h2>How to Play</h2>
+        <h2>How to Play - Daily</h2>
         <ul>
             <li>Guess the random PR Player from this list. (Can be IM/HM)</li>
             <li>Max 4 guesses.</li>
             <li>Start knowing the PR season, and each guess unlocks a new hint.</li>
             <li>If your guess is on this PR, it will tell you higher/lower.</li>
             <li>Use the hints to narrow down the possible players.</li>
-            <li>If you run out of guesses, idk maybe try again tomorrow.</li>
-            <li>There's a new puzzle every day!</li>
+            <li>If you run out of guesses, try again tomorrow or play RANDOM.</li>
+            <li>There's a new game every day!</li>
+        </ul>
+        <h2>How to Play - Random</h2>
+        <ul>
+            <li>Same rules as above.</li>
+            <li>See how many random games you can win in a row.</li>
+            <li>Losing resets the streak.</li>
         </ul>
 
-        <h2>Features to be changed upon release</h2>
-        <ul>
-            <li>User will only have one try per day based on localstorage and cookies. this is disabled for testing.</li>
-            <li>Continue? will give you the puzzle from the previous day. This may end up being removed on release.</li>
-        </ul>
         <button onclick="toggleHowToPlay()">Close</button>
     </div>
 
@@ -98,6 +99,7 @@
         <div id="resultsFalcoImages"></div> <!-- Container for Falco images -->
         <div id="resultsMessage"></div>
         <button onclick="toggleTodaysResultsBox()">Close</button>
+        <button id="copyResults">Copy</button>
     </div>
     <div id="randomResultsBox" class="hidden">
         <h2>MIPRDLE - RANDOM</h2>
@@ -108,9 +110,9 @@
             </tbody>
         </table>
         </div>
-        
         <div id="rrbContainer">
             <button id="closeRandomBoxButton" onclick="toggleRandomResultsBox()">Close</button>
+            <button id="copyResultsRandom" class="hidden">Copy</button>
             <img id="smashBallImage2" src="images/SmashBall.png" alt="Smash Ball" style="width: 40px; height: 40px; margin-left: 10px;">
             <span id="smashBallText2"> X <span id="displayStreak2"></span></span>
             <span id="streakCount2"></span>

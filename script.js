@@ -547,30 +547,98 @@ function startNewGame(success) {
     }
 }
 
+document.getElementById("copyResults").addEventListener("click", function() {
+    // Get the container element that holds the results
+    let container = document.getElementById("todaysResultsBox");
+
+    if (container) {
+        // Extract text content, filter out buttons, and remove empty lines
+        let textContent = Array.from(container.childNodes)
+            .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== "BUTTON"))
+            .map(node => node.textContent.trim())
+            .filter(text => text.length > 0) // Remove empty lines
+            .join("\n");
+
+        // Count images inside the container
+        let imageCount = container.getElementsByTagName("img").length;
+
+        // Create an emoji row representing the images
+        let imageEmojis = imageCount > 0 ? "\n" + "🐦".repeat(imageCount) : "";
+        let footerLink = "\n\nhttps://michiganmelee.com";
+        // Create a temporary textarea to hold the text
+        let tempElement = document.createElement("textarea");
+        tempElement.value = textContent + imageEmojis + footerLink;
+
+        // Append the textarea to the document
+        document.body.appendChild(tempElement);
+
+        // Select and copy the text
+        tempElement.select();
+        document.execCommand("copy");
+
+        // Remove the temporary element
+        document.body.removeChild(tempElement);
+
+        // Provide user feedback
+        alert("Results copied to clipboard!");
+    }
+});
+
+document.getElementById("copyResultsRandom").addEventListener("click", function() {
+    // Get the table inside the container
+    let table = document.querySelector("#randomResultsBox table");
+
+    if (table) {
+        let rows = table.querySelectorAll("tr");
+        
+        // Start with header
+        let outputText = "MIPRDLE - RANDOM\n";
+
+        // Process table rows
+        let tableText = Array.from(rows).map((row, index) => {
+            let cells = row.querySelectorAll("td");
+            let rowText = Array.from(cells)
+                .map(cell => `${cell.textContent.trim()} |`)
+                .join(" ");
+
+            // Add emoji column
+            let emoji = (index === rows.length - 1) ? "🟥" : "🟩";
+            return rowText + ` ${emoji}`;
+        }).join("\n");
+
+        // Append table content and link
+        outputText += tableText + "\n\nhttps://michiganmelee.com";
+
+        // Create a temporary textarea to copy text
+        let tempElement = document.createElement("textarea");
+        tempElement.value = outputText;
+
+        // Append, copy, and clean up
+        document.body.appendChild(tempElement);
+        tempElement.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempElement);
+
+        // User feedback
+        alert("Random results copied to clipboard!");
+    }
+});
+
+
+
 function updateStreak(success) {
     const streak = localStorage.getItem("randomStreak") || 0;
-     
     if (success) {
         localStorage.setItem("randomStreak", parseInt(streak, 10) + 1);
-        
     } else {
         localStorage.setItem("randomStreak", 0);
-        
     }
 }
 
 function toggleTodaysResultsBox(success) {
     const todaysResultsBox = document.getElementById("todaysResultsBox");
-    //const resultsFalcoImages = document.getElementById("resultsFalcoImages");
-    //const ratingElement = document.getElementById("rating");
 
     if (todaysResultsBox.style.display === "none" || !todaysResultsBox.style.display) {
-        // Move remaining Falco images to the results box
-        //const remainingFalcoImages = document.querySelectorAll("#rating .falco-image");
-        //console.log("toggleTodaysResultsBox-remainingFalcoImages: ", remainingFalcoImages);
-        //remainingFalcoImages.forEach(img => {
-        //resultsFalcoImages.appendChild(img);
-        //});
         successFailure(success); // Success! Failure message in the todaysresults
         // Set the date in the results box
         const resultsDateElement = document.getElementById("resultsDate");
@@ -590,6 +658,8 @@ function toggleTodaysResultsBox(success) {
 function toggleRandomResultsBox(success) {
     const randomResultsBox = document.getElementById("randomResultsBox");
     const randomResultsTable = document.getElementById("randomResultsTable").querySelector("tbody");
+    const copyButton = document.getElementById("copyResultsRandom");
+
     if (randomResultsBox.style.display === "none" || !randomResultsBox.style.display) {
         localStorage.setItem("success", success);
         console.log("toggleRandomResultsBox-success1: ", success);
@@ -627,9 +697,13 @@ function toggleRandomResultsBox(success) {
     });
 
     //makes the last row row red if the last guess was wrong
+    console.log("success button", success);
     if (success === false || success === "false") {
         const lastRow = randomResultsTable.rows[randomResultsTable.rows.length - 1];
         lastRow.style.backgroundColor = "rgba(255, 0, 0, 0.7)"; 
+        copyButton.style.display = 'block'; // Unhide if failed
+    } else if (success === true || success === "true"){
+        copyButton.style.display = "none"; // Hide if success
     }
 
     console.log(streakArrayTags, Array.isArray(streakArrayTags)); 

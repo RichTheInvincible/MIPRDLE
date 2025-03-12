@@ -321,6 +321,11 @@ h1 {
     z-index: 1000;
 }
 
+#randomResultsBox button{
+    box-shadow: none;
+    margin-right: 2%;
+}
+
 #randomResultsBox h2 {
     margin-top: 0;
 }
@@ -563,12 +568,12 @@ h1 {
     }
 
     #searchContainer {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-    }
 
+    }
     #answerInput {
-        width: 90%;
+        width: 30%;
     }
 
     button {
@@ -596,6 +601,6 @@ h1 {
         overflow-y: auto;
     }
     #randomResultsBox button{
-        max-width: 40%;
+        max-width: 25%;
     }
 }
