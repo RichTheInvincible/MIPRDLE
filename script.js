@@ -564,7 +564,7 @@ document.getElementById("copyResults").addEventListener("click", function() {
 
         // Create an emoji row representing the images
         let imageEmojis = imageCount > 0 ? "\n" + "🐦".repeat(imageCount) : "";
-        let footerLink = "\n\nhttps://michiganmelee.com";
+        let footerLink = "\n\nhttps://miprdle.michiganmelee.com";
         // Create a temporary textarea to hold the text
         let tempElement = document.createElement("textarea");
         tempElement.value = textContent + imageEmojis + footerLink;
@@ -607,7 +607,7 @@ document.getElementById("copyResultsRandom").addEventListener("click", function(
         }).join("\n");
 
         // Append table content and link
-        outputText += tableText + "\n\nhttps://michiganmelee.com";
+        outputText += tableText + "\n\nhttps://miprdle.michiganmelee.com";
 
         // Create a temporary textarea to copy text
         let tempElement = document.createElement("textarea");
