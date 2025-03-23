@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(text => {
             const rows = text.split("\n").filter(row => row.trim() !== "").map(row => row.split(",").map(cell => (cell ? cell.trim() : "")));
             
-            // extract header and data rows
+            //extract header and data rows
             if (rows.length < 2) {
                 return;
             }
@@ -25,30 +25,30 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentDateElement = document.getElementById("currentDate");
             const streakText = document.getElementById("streakText");
             
-            // hash function to determine the index based on the date
+            //hash function to determine the index based on the date
             function hashDate(date) {
                 const dateString = date.toDateString();
                 let hash = 0;
                 for (let i = 0; i < dateString.length; i++) {
                     const char = dateString.charCodeAt(i);
                     hash = (hash << 5) - hash + char;
-                    hash |= 0; // convert to 32bit integer
+                    hash |= 0; //convert to 32bit integer
                 }
                 return Math.abs(hash) % data.length;
             }
             
-            // determine today's index using the hash function
+            //determine today's index using the hash function
             const todayIndex = hashDate(new Date());
             const todayRow = data[todayIndex] || [];
             
-            // ensure the row has enough columns before accessing
+            //ensure the row has enough columns before accessing
             if (todayRow.length < 7) {
                 return;
             }
             
-            let currentRow = todayRow; // track the current row being used
-            console.log(todayRow); //for cheating
-            // set initial hints for today
+            let currentRow = todayRow; //track the current row being used
+            //console.log(todayRow); //for cheating
+            //set initial hints for today
             const hintCategories = ["PR Season:", "Most Recent Appearance:", "First Appearance:", "Appearances:"];
             const hintValues = [todayRow[1], "", "", ""];
             hintCategories.forEach((category, index) => {
@@ -62,12 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 hintsTableBody.appendChild(hintRow);
             });
             
-            // set the first hint cell to always be purple and apply flip animation
+            //set the first hint cell to always be purple and apply flip animation
             const firstHintCell = hintsTableBody.rows[0].cells[0];
             firstHintCell.classList.add("hint-revealed");
             applyFlipAnimation(firstHintCell, "rgba(128, 0, 128, 0.7)");
             
-            // populate dropdown with unique answers in alphabetical order (case insensitive)
+            //populate dropdown with unique answers in alphabetical order (case insensitive)
             const uniqueAnswers = [...new Set(data.map(row => row[3]).filter(Boolean))].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
             uniqueAnswers.forEach(answer => {
                 const option = document.createElement("option");
@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 dataList.appendChild(option);
             });
 
-            // populate rank table with ranks only
+            //populate rank table with ranks only
             function populateRankTable(row) {
                 const sameNumberRows = data.filter(dataRow => dataRow[0] === row[0]);
-                rankTableBody.innerHTML = ""; // clear existing rows
+                rankTableBody.innerHTML = ""; //clear existing rows
                 sameNumberRows.forEach(dataRow => {
                     const tr = document.createElement("tr");
                     const rankTd = document.createElement("td");
@@ -143,10 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Check if it's today's puzzle
                 const today = new Date().toDateString();
                 if (currentDateElement.textContent !== "RANDOM") {
-                console.log("currentdateelement: ", currentDateElement);
-                // If already attempted today, prevent further guesses
-                console.log("lastguessdate: ", localStorage.getItem("lastGuessDate"));
-                console.log("today", today);
+                //console.log("currentdateelement: ", currentDateElement);
+                
+                //If already attempted today, prevent further guesses
+                //console.log("lastguessdate: ", localStorage.getItem("lastGuessDate"));
+                //console.log("today", today);
                 if (localStorage.getItem("lastGuessDate") === today) {
                     feedbackElement.style.display = "block";
                 return;
@@ -158,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (guessCount >= maxGuesses) {
                     showResults(false, guessCount);
                     if (currentDateElement.textContent !== "RANDOM") {
-                        localStorage.setItem("lastGuessDate", today); // Mark today's puzzle as played
+                        localStorage.setItem("lastGuessDate", today); //Mark today's puzzle as played
                     }
                     submitButton.disabled = true;
                     return;
@@ -169,18 +170,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     localStorage.setItem("correctAnswerTag", currentRow[3]);
                     showResults(true, guessCount, correctAnswer, maxGuesses, currentRow);
                     if (currentDateElement.textContent !== "RANDOM") {
-                        localStorage.setItem("lastGuessDate", today); // Mark today's puzzle as played
+                        localStorage.setItem("lastGuessDate", today); //Mark today's puzzle as played
                     }
                     return;
                 }
                 
-                // find the guessed row
+                //find the guessed row
                 const guessedRow = data.find(row => row[3].toLowerCase() === userGuess && row[0] === currentRow[0]);
                 if (guessedRow) {
                     const correctRank = currentRow[2] === "HM" ? 30 : currentRow[2] === "IM" ? 31 : parseInt(currentRow[2], 10);
                     const guessedRank = guessedRow[2] === "HM" ? 30 : guessedRow[2] === "IM" ? 31 : parseInt(guessedRow[2], 10);
                     
-                    // update the table with the guessed tag and arrow
+                    //update the table with the guessed tag and arrow
                     const rowIndex = data.filter(row => row[0] === currentRow[0]).indexOf(guessedRow);
                     if (rowIndex !== -1 && rankTableBody.rows[rowIndex]) {
                         const rankCell = rankTableBody.rows[rowIndex].cells[0];
@@ -189,9 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                         tagCell.textContent = guessedRow[3];
                         if (guessedRank > correctRank) {
-                            hintCell.innerHTML = "&#x21e7;"; // up arrow
+                            hintCell.innerHTML = "&#x21e7;"; //up arrow
                         } else if (guessedRank < correctRank) {
-                            hintCell.innerHTML = "&#x21e9;"; // down arrow
+                            hintCell.innerHTML = "&#x21e9;"; //down arrow
                         } else {
                             hintCell.textContent = "=";
                         }
@@ -208,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         });
                     }
                     
-                    // add the correct guess to the guesses column with orange background
+                    //add the correct guess to the guesses column with orange background
                     const guessCell = hintsTableBody.rows[guessCount].cells[1];
                     guessCell.textContent = guessedRow[3];
                     guessCell.classList.add("correct-rank");
@@ -217,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     
                 } else {
-                    // add the wrong guess to the guesses column with red background
+                    //add the wrong guess to the guesses column with red background
                     const guessCell = hintsTableBody.rows[guessCount].cells[1];
                     const guessedTag = data.find(row => row[3].toLowerCase() === userGuess);
                     guessCell.textContent = guessedTag ? guessedTag[3] : userGuess;
@@ -227,9 +228,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
                 
-                // reveal a hint
+                //reveal a hint
                 if (guessCount < hints.length) {
-                    const hintRow = hintsTableBody.rows[guessCount + 1]; // skip the first row
+                    const hintRow = hintsTableBody.rows[guessCount + 1]; //skip the first row
                     const hintTd = hintRow.cells[0];
                     hintTd.innerHTML = `<strong>${hints[guessCount].category}</strong> ${hints[guessCount].hint}`;
                     hintTd.classList.add("hint-revealed");
@@ -238,13 +239,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
                 
-                // remove a falco image
+                //remove a falco image
                 const falcoImages = document.querySelectorAll("#rating .falco-image");
-                console.log("Remaining Falco images:", falcoImages.length); // Log the number of remaining Falco images
+                //console.log("Remaining Falco images:", falcoImages.length); //Log the number of remaining Falco images
                 if (falcoImages.length > 0) {
                     falcoImages[falcoImages.length - 1].remove();
                 }
-                console.log("Remaining Falco images2:", falcoImages.length); // Log the number of remaining Falco images
+                //console.log("Remaining Falco images2:", falcoImages.length); //Log the number of remaining Falco images
 
                 guessCount++;
                 if (guessCount >= maxGuesses) {                 
@@ -258,14 +259,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 resultsContainer.style.display = "flex";
                 //Move remaining Falco images to the results box before clearing the rating container
                 const resultsFalcoImages = document.getElementById("resultsFalcoImages");
-                resultsFalcoImages.innerHTML = ""; // Clear any existing images
+                resultsFalcoImages.innerHTML = ""; //Clear any existing images
                 const remainingFalcoImages = document.querySelectorAll("#rating .falco-image");
                 
 
                 remainingFalcoImages.forEach(img => {
                 resultsFalcoImages.appendChild(img);
                 });
-                console.log("showresults - guesscount:", guessCount);
+                //console.log("showresults - guesscount:", guessCount);
                 ratingElement.innerHTML = "";
                 const rating = success ? maxGuesses - guessCount : 0;
                 
@@ -276,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ratingElement.appendChild(img);
                 }
 
-                // display the result image
+                //display the result image
                 const imageName = currentRow[7];
                 if (imageName) {
                     resultImageElement.src = `images/PRGraphics/${imageName}`;
@@ -290,15 +291,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     resultImageElement.style.display = "none";
                 }
                 
-                // preserve existing styles and arrows
+                //preserve existing styles and arrows
                 const preservedRows = Array.from(rankTableBody.rows).map(row => {
                     const clonedRow = row.cloneNode(true);
                     clonedRow.className = row.className;
                     return clonedRow;
                 });
 
-                // populate the rank table with the correct ranks and tags
-                rankTableBody.innerHTML = ""; // clear existing rows
+                //populate the rank table with the correct ranks and tags
+                rankTableBody.innerHTML = ""; //clear existing rows
                 const sameNumberRows = data.filter(row => row[0] === currentRow[0]);
                 sameNumberRows.forEach((dataRow, index) => {
                     const tr = preservedRows[index] || document.createElement("tr");
@@ -316,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     rankTableBody.appendChild(tr);
                 });
 
-                // highlight the correct answer row
+                //highlight the correct answer row
                 const correctRowIndex = sameNumberRows.findIndex(row => row[3].toLowerCase() === correctAnswer);
                 if (correctRowIndex !== -1) {
                     applyFlipAnimation(rankTableBody.rows[correctRowIndex], rankTableBody.rows[correctRowIndex].style.backgroundColor, () => {
@@ -328,45 +329,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 const submitButton = document.getElementById("submitButton");
                 submitButton.disabled = true;
 
-                // show the "continue?" button
+                //show the "continue?" button
                 newGameButton.style.display = "block";
 
 
-                // Add the correct answer tag and season for random puzzles
+                //Add the correct answer tag and season for random puzzles
                 if (currentDateElement.textContent === "RANDOM") {
-                    console.log("streak: ", localStorage.getItem("streak"));
+                    //console.log("streak: ", localStorage.getItem("streak"));
 
-                    // Retrieve existing arrays
+                    //Retrieve existing arrays
                     let streakArrayTags = JSON.parse(localStorage.getItem("streakArrayTags")) || [];
                     let streakArraySeasons = JSON.parse(localStorage.getItem("streakArraySeasons")) || [];
                 
-                    // Convert streak to a number (default to 0 if null)
+                    //Convert streak to a number (default to 0 if null)
                     let streakIndex = parseInt(localStorage.getItem("streak"), 10) || 0;
                 
-                    // Append the new correct answer
+                    //Append the new correct answer
                     streakArrayTags.push(currentRow[3]);
                     streakArraySeasons.push(currentRow[1]);
                 
-                    // Store updated arrays back in localStorage
+                    //Store updated arrays back in localStorage
                     localStorage.setItem("streakArrayTags", JSON.stringify(streakArrayTags));
                     localStorage.setItem("streakArraySeasons", JSON.stringify(streakArraySeasons));
                 
-                    console.log("Updated streakArrayTags:", localStorage.getItem("streakArrayTags"));
-                    console.log("Updated streakArraySeasons:", localStorage.getItem("streakArraySeasons"));
+                    //console.log("Updated streakArrayTags:", localStorage.getItem("streakArrayTags"));
+                    //console.log("Updated streakArraySeasons:", localStorage.getItem("streakArraySeasons"));
                 
-                    // Update streak count in localStorage
+                    //Update streak count in localStorage
                     localStorage.setItem("streak", streakIndex + 1);
                 }
 
                 //reset guesscount
                 guessCount = 0;
-                // Show the today's results box if today's puzzle is finished
-                console.log(currentDateElement.textContent);
+                //Show the today's results box if today's puzzle is finished
+                //console.log(currentDateElement.textContent);
                 if (currentDateElement.textContent !== "RANDOM") {
-                    console.log("showResults-success: ", success);
+                    //console.log("showResults-success: ", success);
                     return toggleTodaysResultsBox(success), success;
                 }else{
-                    console.log("showResults-success: ", success);
+                    //console.log("showResults-success: ", success);
                     return toggleRandomResultsBox(success), updateStreak(success), success;
                     
                 }
@@ -374,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             window.randomGame = function(success) {
-                const currentTime = Date.now(); // current time in milliseconds
+                const currentTime = Date.now(); //current time in milliseconds
                 const randomIndex = currentTime % data.length;
                 const randomRow = data[randomIndex] || [];
 
@@ -382,18 +383,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 const submitButton = document.getElementById("submitButton");
                 submitButton.disabled = false;
 
-                console.log("randomGame-success: ", success);
+                //console.log("randomGame-success: ", success);
 
-                // ensure the row has enough columns before accessing
+                //ensure the row has enough columns before accessing
                 if (randomRow.length < 7) {
                     return;
                 }
 
-                // clear existing hints and rank table
+                //clear existing hints and rank table
                 hintsTableBody.innerHTML = "";
                 rankTableBody.innerHTML = "";
 
-                // set initial hints for the random puzzle
+                //set initial hints for the random puzzle
                 const hintValues = [randomRow[1], "", "", ""];
                 hintCategories.forEach((category, index) => {
                     const hintRow = document.createElement("tr");
@@ -405,33 +406,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     hintRow.appendChild(guessTd);
                     hintsTableBody.appendChild(hintRow);
                 });
-                console.log(randomRow); //for cheating
-                // set the first hint cell to always be purple and apply flip animation
+                //console.log(randomRow); //for cheating
+                //set the first hint cell to always be purple and apply flip animation
                 const firstHintCell = hintsTableBody.rows[0].cells[0];
                 firstHintCell.classList.add("hint-revealed");
                 applyFlipAnimation(firstHintCell, "rgba(128, 0, 128, 0.7)");
 
-                // populate rank table with ranks and blank tags for the random puzzle
+                //populate rank table with ranks and blank tags for the random puzzle
                 populateRankTable(randomRow);
 
-                // reset guess count and other elements
+                //reset guess count and other elements
                 guessCount = 0;
-                feedbackElement.textContent = ""; // Clear any existing feedback messages
+                feedbackElement.textContent = ""; //Clear any existing feedback messages
                 resultsContainer.style.display = "none";
                 resultImageElement.style.display = "none";
-                newGameButton.style.display = "none"; // hide the button until the puzzle is solved
+                newGameButton.style.display = "none"; //hide the button until the puzzle is solved
 
-                // update the title to "RANDOM"
+                //update the title to "RANDOM"
                 currentDateElement.textContent = "RANDOM";
 
-                currentRow = randomRow; // update the current row to the random row
+                currentRow = randomRow; //update the current row to the random row
                 
-                 //reset falco images
-
+                //reset falco images
                 guessCount = 0;
                 const ratingElement = document.getElementById("rating");
                 ratingElement.innerHTML = "";
-                console.log("random - ratingElement2: ", ratingElement.length);
+                //console.log("random - ratingElement2: ", ratingElement.length);
                 
                 setTimeout(() => {
                     for (let i = 0; i < maxGuesses; i++) {
@@ -442,8 +442,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }, 50);
 
-                console.log("random - ratingElement3: ", ratingElement.length);
-                // update hints for the random puzzle
+                //console.log("random - ratingElement3: ", ratingElement.length);
+                //update hints for the random puzzle
                 hints.length = 0;
                 hints.push(
                     { category: "Most Recent Appearance:", hint: randomRow[4] },
@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     { category: "Appearances:", hint: randomRow[6] }
                 );
 
-                // Replace the random button with the Smash Ball image and show the streak text
+                //Replace the random button with the Smash Ball image and show the streak text
                 document.getElementById("randomButton").style.display = "none";
                 document.getElementById("smashBallImage").style.display = "block";
                 const streak = localStorage.getItem("randomStreak") || 0;
@@ -462,12 +462,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     const streak = localStorage.getItem("randomStreak") || 0;
                     streakText.textContent = streak;
                 }
-
-                // Ensure the results container is displayed
+                //idk if this is needed
                 resultsContainer.style.display = "flex";
             }
 
-            // function to apply flip animation
+            //function to apply flip animation
             function applyFlipAnimation(cell, color, callback) {
                 cell.style.setProperty('--flip-color', color);
                 cell.classList.add("flip");
@@ -477,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 500);
             }
 
-            // Initialize the streak count
+            //Initialize the streak count
             document.getElementById("streakCount").textContent = localStorage.getItem("randomStreak") || 0;
             document.getElementById("displayStreak").textContent = localStorage.getItem("randomStreak") || 0;
             
@@ -487,18 +486,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-//Success! Failure message in the todaysresultsbox
+//Success Failure message in the todaysresultsbox
 function successFailure(success) {
     const resultsMessageElement = document.getElementById("resultsMessage");
     resultsMessageElement.textContent = success ? "SUCCESS!" : "FAILURE";
     resultsMessageElement.setAttribute("resultsMessage", success ? "SUCCESS!" : "FAILURE");
                 if (!success) {
                     resultsMessageElement.classList.add("failure");
-                    console.log("successFailure-addfail: ", success);
+                    //console.log("successFailure-addfail: ", success);
                 } else {
                     resultsMessageElement.classList.remove("failure");
                     resultsMessageElement.classList.add("success");
-                    console.log("successFailure-removefail:", success);
+                    //console.log("successFailure-removefail:", success);
                 }
 }
 
@@ -533,9 +532,9 @@ function startNewGame(success) {
     if (randomResultsBox.style.display !== "none" || !randomResultsBox.style.display) {
         randomResultsBox.style.display = "none";
         randomResultsBox.classList.remove("grow");
-                        //if the last guess was wrong clear the correct answers from localstorage
+        //if the last guess was wrong clear the correct answers from localstorage
         success = localStorage.getItem("success");
-        console.log("startnewgamesuccess: ", success);
+        //console.log("startnewgamesuccess: ", success);
         if (success === false || success === "false") {
             localStorage.setItem("streakArrayTags", JSON.stringify([]));
             localStorage.setItem("streakArraySeasons", JSON.stringify([]));
@@ -548,78 +547,78 @@ function startNewGame(success) {
 }
 
 document.getElementById("copyResults").addEventListener("click", function() {
-    // Get the container element that holds the results
+    //Get the container element that holds the results
     let container = document.getElementById("todaysResultsBox");
 
     if (container) {
-        // Extract text content, filter out buttons, and remove empty lines
+        //Extract text content, filter out buttons, and remove empty lines
         let textContent = Array.from(container.childNodes)
             .filter(node => node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName !== "BUTTON"))
             .map(node => node.textContent.trim())
-            .filter(text => text.length > 0) // Remove empty lines
+            .filter(text => text.length > 0) //Remove empty lines
             .join("\n");
 
-        // Count images inside the container
+        //Count images inside the container
         let imageCount = container.getElementsByTagName("img").length;
 
-        // Create an emoji row representing the images
+        //emoji row representing the images
         let imageEmojis = imageCount > 0 ? "\n" + "🐦".repeat(imageCount) : "";
         let footerLink = "\n\nhttps://miprdle.michiganmelee.com";
-        // Create a temporary textarea to hold the text
+        //temporary textarea to hold the text
         let tempElement = document.createElement("textarea");
         tempElement.value = textContent + imageEmojis + footerLink;
 
-        // Append the textarea to the document
+        //Append the textarea to the document
         document.body.appendChild(tempElement);
 
-        // Select and copy the text
+        //Select and copy the text
         tempElement.select();
         document.execCommand("copy");
 
-        // Remove the temporary element
+        //Remove the temporary element
         document.body.removeChild(tempElement);
 
-        // Provide user feedback
+        //Provide user feedback
         alert("Results copied to clipboard!");
     }
 });
 
 document.getElementById("copyResultsRandom").addEventListener("click", function() {
-    // Get the table inside the container
+    //Get the table inside the container
     let table = document.querySelector("#randomResultsBox table");
 
     if (table) {
         let rows = table.querySelectorAll("tr");
         
-        // Start with header
+        //Start with header
         let outputText = "MIPRDLE - RANDOM\n";
 
-        // Process table rows
+        //Process table rows
         let tableText = Array.from(rows).map((row, index) => {
             let cells = row.querySelectorAll("td");
             let rowText = Array.from(cells)
                 .map(cell => `${cell.textContent.trim()} |`)
                 .join(" ");
 
-            // Add emoji column
+            //Add emoji column
             let emoji = (index === rows.length - 1) ? "🟥" : "🟩";
             return rowText + ` ${emoji}`;
         }).join("\n");
 
-        // Append table content and link
+        //Append table content and link
         outputText += tableText + "\n\nhttps://miprdle.michiganmelee.com";
 
-        // Create a temporary textarea to copy text
+        //Create a temporary textarea to copy text
         let tempElement = document.createElement("textarea");
         tempElement.value = outputText;
 
-        // Append, copy, and clean up
+        //Append, copy, and clean up
         document.body.appendChild(tempElement);
         tempElement.select();
         document.execCommand("copy");
         document.body.removeChild(tempElement);
 
-        // User feedback
+        //User feedback
         alert("Random results copied to clipboard!");
     }
 });
@@ -639,8 +638,8 @@ function toggleTodaysResultsBox(success) {
     const todaysResultsBox = document.getElementById("todaysResultsBox");
 
     if (todaysResultsBox.style.display === "none" || !todaysResultsBox.style.display) {
-        successFailure(success); // Success! Failure message in the todaysresults
-        // Set the date in the results box
+        successFailure(success); //Success! Failure message in the todaysresults
+        //date in the results box
         const resultsDateElement = document.getElementById("resultsDate");
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const today = new Date().toLocaleDateString(undefined, options);
@@ -662,33 +661,33 @@ function toggleRandomResultsBox(success) {
 
     if (randomResultsBox.style.display === "none" || !randomResultsBox.style.display) {
         localStorage.setItem("success", success);
-        console.log("toggleRandomResultsBox-success1: ", success);
-        // Retrieve and parse the arrays properly
+        //console.log("toggleRandomResultsBox-success1: ", success);
+        //Retrieve and parse the arrays properly
     let streakArrayTags = localStorage.getItem("streakArrayTags");
-    console.log(localStorage.getItem("streakArrayTags"));
+    //console.log(localStorage.getItem("streakArrayTags"));
     if (!streakArrayTags) {
-        streakArrayTags = []; // Default to an empty array if null
+        streakArrayTags = []; //Default to an empty array if null
     } else {
     try {
         streakArrayTags = JSON.parse(streakArrayTags);
         if (!Array.isArray(streakArrayTags)) {
-            streakArrayTags = []; // Ensure it's an array
+            streakArrayTags = []; //Ensure it's an array
         }
     } catch (error) {
-        console.error("Error parsing streakArrayTags from localStorage:", error);
-        streakArrayTags = []; // Handle corrupted data
+        //console.error("Error parsing streakArrayTags from localStorage:", error);
+        streakArrayTags = []; //Handle corrupted data
         }
     }
     
     let streakArraySeasons = JSON.parse(localStorage.getItem("streakArraySeasons")) || [];
 
-    console.log("streakArrayTags:", streakArrayTags);
-    console.log("streakArraySeasons:", streakArraySeasons);
+    //console.log("streakArrayTags:", streakArrayTags);
+    //console.log("streakArraySeasons:", streakArraySeasons);
     
-    // Clear previous table content
+    //Clear previous table content
     randomResultsTable.innerHTML = "";
 
-    // Populates the table with correct guesses and the first wrong guess
+    //Populate the table with correct guesses and the first wrong guess
     streakArrayTags.forEach((tag, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `<td>${tag}</td><td>${streakArraySeasons[index]}</td>`;
@@ -696,8 +695,8 @@ function toggleRandomResultsBox(success) {
         randomResultsTable.rows[index].style.backgroundColor = "rgba(0, 255, 0, 0.7)";
     });
 
-    //makes the last row row red if the last guess was wrong
-    console.log("success button", success);
+    //make the last row row red if the last guess was wrong
+    //console.log("success button", success);
     if (success === false || success === "false") {
         const lastRow = randomResultsTable.rows[randomResultsTable.rows.length - 1];
         lastRow.style.backgroundColor = "rgba(255, 0, 0, 0.7)"; 
@@ -706,9 +705,9 @@ function toggleRandomResultsBox(success) {
         copyButton.style.display = "none"; // Hide if success
     }
 
-    console.log(streakArrayTags, Array.isArray(streakArrayTags)); 
+    //console.log(streakArrayTags, Array.isArray(streakArrayTags)); 
 
-     // Replace the random button with the Smash Ball image and show the streak text
+     //Replace the random button with the Smash Ball image and show the streak text
      document.getElementById("smashBallImage2").style.display = "block";
      const streak = localStorage.getItem("randomStreak") || 0;
      document.getElementById("smashBallText2").style.display = "inline";
@@ -722,12 +721,12 @@ function toggleRandomResultsBox(success) {
         var streak2 = Number(localStorage.getItem("randomStreak")) || 0;
         document.getElementById("displayStreak2").textContent = streak2;
      }
-    // Show/hide the results box
+    //Show/hide the results box
         randomResultsBox.style.display = "block";
         randomResultsBox.classList.add("grow");
     } else {
         success = localStorage.getItem("success");
-        console.log("randomresultsbox success: ", success);
+        //console.log("randomresultsbox success: ", success);
         if (success === false || success === "false") {
             localStorage.setItem("streakArrayTags", JSON.stringify([]));
             localStorage.setItem("streakArraySeasons", JSON.stringify([]));

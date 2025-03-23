@@ -9,12 +9,12 @@ body {
 
 #gameContainer {
     display: flex;
-    justify-content: center; /* Center align the container */
-    align-items: flex-start; /* Align items to the top */
-    width: 100%; /* Ensure the container takes full width */
-    max-width: 100%; /* Ensure the container takes full width */
-    gap: 2%; /* Ensure consistent gap between all elements */
-    overflow-x: auto; /* Allow horizontal scrolling */
+    justify-content: center; 
+    align-items: flex-start; 
+    width: 100%; 
+    max-width: 100%; 
+    gap: 2%; 
+    overflow-x: auto; 
 }
 
 #hintsTable, #wrongAnswersTable, #rankTable {
@@ -51,7 +51,7 @@ body {
 }
 
 .falco-image {
-    height: 40px; /* Match the height of the buttons */
+    height: 40px; 
     margin-right: 5px;
     margin-bottom: 20px;
 }
@@ -64,9 +64,9 @@ body {
 /* Additional styling for tables and buttons */
 table {
     border-collapse: collapse;
-    width: 100%; /* Ensure the table takes full width */
+    width: 100%; 
     margin-bottom: 20px;
-    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-x: auto; 
 }
 
 th, td {
@@ -123,7 +123,6 @@ h1 {
     background-color: rgba(128, 0, 128, 0.7);
 }
 
-/* Make the tag column as wide as the relation column */
 #rankTable th:nth-child(2),
 #rankTable td:nth-child(2) {
     width: 50%;
@@ -149,7 +148,7 @@ h1 {
 #howToPlayButton {
     background-size: contain;
     width: auto;
-    height: 40px; /* Match the height of the Falco images */
+    height: 40px; 
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -169,7 +168,7 @@ h1 {
 #submitButton{
     background-size: contain;
     width: auto;
-    height: 40px; /* Match the height of the Falco images */
+    height: 40px; 
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -215,7 +214,7 @@ h1 {
 #randomButton {
     background-size: contain;
     width: auto;
-    height: 60px; /* Match the height of the Falco images */
+    height: 60px; 
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -438,15 +437,15 @@ h1 {
     max-width: 300px;
     height: auto;
     max-height: 300px;
-    margin-left: 2%; /* Ensure consistent gap between all elements */
+    margin-left: 2%; 
     object-fit: contain;
-    cursor: pointer; /* Change cursor to pointer to indicate clickability */
+    cursor: pointer; 
 }
 
 #resultImageContainer {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align items to the top */
+    align-items: flex-start; 
     border-radius: 10px;
 }
 
@@ -501,7 +500,7 @@ h1 {
     margin-bottom: 20px;
     cursor: pointer;
     font-size: 16px;
-    font-weight: bold; /* Make the text bold */
+    font-weight: bold;
     position: relative;
     transform: skew(-30deg, 0deg);
     transform-origin: top right;
@@ -510,14 +509,14 @@ h1 {
 
 #newGame span {
     display: inline-block;
-    transform: skew(30deg, 0deg); /* Skew the text back to 0 degrees */
+    transform: skew(30deg, 0deg); /* Skews the text back to 0 degrees */
 }
 
 #newGame::after {
     content: '';
     position: absolute;
     top: 0;
-    right: -3px; /* Adjust to align with the button */
+    right: -3px;
     width: 3px;
     height: 100%;
     background-color: red;
