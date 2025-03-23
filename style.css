@@ -31,6 +31,13 @@ body {
     margin-bottom: 20px;
 }
 
+#signup{
+    margin-bottom: 1%;
+    color: white;
+}
+#signup a{
+    color: magenta;
+}
 #answerInput {
     border-radius: 10px;
     padding: 5px;
