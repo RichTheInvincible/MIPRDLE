@@ -1,0 +1,45 @@
+{
+  "name": "ssbmrankdle",
+  "version": "1.0.0",
+  "description": "A daily Wordle-style puzzle game built with React.",
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
+  },
+  "keywords": [
+    "wordle",
+    "puzzle",
+    "game",
+    "react"
+  ],
+  "author": "<Rich>",
+  "license": "MIT",
+  "dependencies": {
+    "gh-pages": "^3.2.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "ssbmrankdle": "file:"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.87",
+    "@types/react-dom": "^17.0.26",
+    "typescript": "^4.1.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
