@@ -1,0 +1,311 @@
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  /* Layered backgrounds: image on top, then grid, then gradient */
+  background-image: 
+    url("../images/assets/splash_border.png"),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 3px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.05) 3px, transparent 1px),
+    linear-gradient(to right, #020888, #02013d, #010020, #02013d, #31015e);
+  background-size: 100% 100%, 50px 50px, 50px 50px, 100% 100%;
+  background-position: center, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, repeat, repeat, no-repeat;
+}
+
+/* Animated glitch overlay */
+.splash-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Make sure content appears above the animation */
+/* Make sure content appears above the animation, but not title-group which needs absolute positioning */
+.splash-container > *:not(.title-group) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Modal should appear above everything */
+.modal-overlay {
+  z-index: 999999 !important;
+}
+
+:root {
+  --splash-control-width: calc(412px + 1.2rem);
+}
+
+.splash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto; /* allow rows to size to their content */
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  width: var(--splash-control-width);
+  max-width: 100%;
+  align-items: start;
+  cursor: none; /* Hide default cursor in grid area */
+  position: relative;
+}
+.splash-btn {
+  background: #2d3250;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  height: 150px;
+  width: 200px;
+  cursor: none; /* Hide default cursor on buttons */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  border: rgb(142, 142, 142) 3px solid;
+  outline: rgb(92, 77, 77) 6px solid;
+}
+.splash-btn:hover {
+    animation: oscillateOutline 0.15s infinite; /* Apply the animation on hover */
+}
+
+/* Individual button styles */
+.splash-btn-daily {
+  background-image: url('../../src/images/stages/SSBMRANK-BETA.png');
+  background-size: 150%;
+  background-position: center;
+  border: black 2px solid;
+}
+
+.splash-btn-miprdle {
+   background-image: url('../../src/images/mipr/mipr.jpg');
+  background-size: 100%;
+  background-position: center;
+  border: black 2px solid;
+}
+
+.splash-btn-random {
+  background-color: rgb(92, 77, 77);
+  font-family: fantasy;
+  color: #000000;
+  font-size:  30pt;
+  letter-spacing: 5px;
+}
+
+.splash-btn-miprdle-random {
+  background-color: rgb(92, 77, 77);
+  font-family: fantasy;
+  color: #000000;
+  font-size:  30pt;
+  letter-spacing: 5px;
+}
+.splash-btn-random span {
+    display: inline-block;
+    position: relative;
+}
+.splash-btn-miprdle-random span {
+    display: inline-block;
+    position: relative;
+}
+.splash-btn-child {
+  font-family: fantasy;
+  color: #000000;
+  font-size:  15pt;
+  letter-spacing: 5px;
+}
+#R {
+    top: -2px;
+}
+
+#A {
+    top: -1px;
+}
+
+#N {
+    top: 0px;
+}
+
+#D {
+    top: 1px;
+}
+
+#O {
+    top: 2px;
+}
+
+#M {
+    top: 3px;
+}
+
+@keyframes oscillateOutline {
+    0% {
+        outline-color: rgba(255, 255, 255, 0);
+    }
+    50% {
+        outline-color: red;
+    }
+    100% {
+        outline-color: rgba(255, 255, 255, 0.659);
+    }
+}
+
+.splash-flex-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-top: 350px;
+  width: min(100%, calc(412px + 1.2rem));
+}
+
+.splash-hardmode-table {
+  all: unset;
+  display: table;
+  width: auto;
+  max-width: none;
+  align-self: start; /* prevent flex parent from stretching table */
+  border-collapse: collapse;
+  margin-bottom: 0rem;
+}
+
+.splash-hardmode-table td {
+  all: unset;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 4px 18px;
+  border: 3px solid rgba(218, 162, 151, 0.927);
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+  font-size: 16pt;
+  line-height: 1;
+}
+
+/* Reset inner label and toggle padding so td controls height */
+.splash-hardmode-table .hardmode-label {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.splash-hardmode-table .hardmode-toggle,
+.splash-hardmode-table .random-toggle {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.splash-hardmode-table .hardmode-toggle-text,
+.splash-hardmode-table .random-toggle-text {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.hardmode-label-cell {
+  text-align: right;
+  padding-right: 0.75rem;
+}
+
+.hardmode-toggle-cell {
+  text-align: left;
+  padding-left: 0.75rem;
+}
+
+.splash-howtoplay-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.splash-howtoplay-btn {
+  background: rgba(0, 0, 0, 0.8);
+  color: #927807;
+  border: 4px solid #927807;
+  border-radius: 8px;
+  padding-top: 15px;
+  padding-right: 20px;
+  font-size: 30pt;
+  text-align: left;
+  font-weight: 1500;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.splash-howtoplay-btn:hover {
+  background: #ff9100;
+  color: black;
+}
+
+.hardmode-toggle,
+.random-toggle {
+  font-weight: bold;
+  border: none;
+  border-left: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 0;
+  margin-right: auto;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  vertical-align: middle;
+}
+
+.hardmode-toggle-text {
+  pointer-events: none; /* Prevent text from interfering with button clicks */
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: 0.25em;
+  display: inline-block;
+  font-size: 16pt;
+  line-height: 1;
+  background: linear-gradient(to right,transparent, rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), transparent);
+  color: black;
+}
+
+.hardmode-toggle-text.hardmode-on {
+  background: none;
+  color: grey;
+}
+
+.random-toggle-text {
+  pointer-events: none; /* Prevent text from interfering with button clicks */
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: 0.25em;
+  display: inline-block;
+  font-size: 16pt;
+  line-height: 1;
+  background: none;
+  color: grey;
+}
+
+.random-toggle-text.random-on {
+  background: linear-gradient(to right,transparent, rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), rgb(1, 172, 1), transparent);
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .splash-flex-row {
+    padding-top: 250px;
+  }   
+  .splash-btn {
+    height: 120px;
+    width: 160px;
+    font-size: 1.5rem;
+    white-space: nowrap;
+  }
+}

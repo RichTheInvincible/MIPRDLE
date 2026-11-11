@@ -1,0 +1,84 @@
+.tag-dropdown {
+    margin: 20px 0;
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+    z-index: 100;
+}
+.tag-dropdown input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.tag-search-input {
+    background-color: rgba(0,0,0,0.9);
+    padding: 5px;
+    font-size: 12pt;
+    border: 5px solid rgb(127, 127, 127);
+    color: white;
+}
+.tag-search-input::placeholder {
+    color: white;
+}
+
+.tag-search-input::-webkit-input-placeholder {
+    color: white;
+}
+
+.tag-search-input::-moz-placeholder {
+    color: white;
+}
+
+.tag-dropdown ul {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: absolute;
+    z-index: 100000;
+    background: white;
+    list-style: none;
+}
+.tag-dropdown li {
+    padding: 8px;
+    cursor: pointer;
+    z-index: 100000;
+    list-style: none;
+}
+
+.tag-dropdown li:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.tag-dropdown-container {
+    position: relative;
+    max-width: 300px;
+}
+
+.tag-dropdown-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.9);
+    border: 5px solid rgb(164, 145, 1);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 9999;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tag-dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+    list-style: none;
+    color: white;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.tag-dropdown-item:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+@media (max-width: 768px) {
+
+}

@@ -1,0 +1,292 @@
+.game-board,
+.random-game-board {
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 20px;
+    padding-top: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+    background-image: 
+    url("../images/assets/splash_border.png"),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 3px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.05) 3px, transparent 1px),
+    linear-gradient(to right, #020888, #02013d, #010020, #02013d, #31015e);
+  background-size: 100% 100%, 50px 50px, 50px 50px, 100% 100%;
+  background-position: center, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, repeat, repeat, no-repeat;
+}
+
+/* Remove background from nested game-board */
+.random-game-board .game-board {
+    background: none;
+    width: auto;
+    min-height: auto;
+    padding: 0;
+    margin: 0;
+}
+
+
+.game-board > *,
+.random-game-board > * {
+  position: relative;
+  z-index: 2;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 10000;
+}
+
+.search-container button {
+    white-space: nowrap;
+}
+
+.search-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.submit-button {
+    background: rgba(0, 0, 0, 0.8);
+  color: #927807;
+  border: 4px solid #927807;
+  border-radius: 8px;
+  padding-top: 15px;
+  padding-right: 20px;
+  font-size: 14pt;
+  text-align: left;
+  font-weight: 1500;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+
+.submit-button:hover {
+    background: #ff9100;
+    color: #000000;
+}
+
+.hint-table {
+    color: white;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 3;
+    border: 6px solid rgb(165, 206, 255);
+    border-left: 12px solid rgb(165, 206, 255);
+    border-right: 12px solid rgb(165, 206, 255);
+    border-collapse: collapse;
+    width: auto;
+}
+
+.hint-table th,
+.hint-table td {
+    color: white;
+    padding: 5px;
+    font-size: clamp(10pt, 2vw, 18pt);
+    background-color: rgba(0,0,0,0.9);
+    border: 6px solid rgb(165, 206, 255);
+    text-align: center;
+}
+
+.hint-table td.revealed {
+    background-color: rgba(161, 104, 5, 0.8) !important;
+}
+
+table {
+    color: white;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 3;
+    border: 6px solid rgb(165, 206, 255);
+    border-left: 12px solid rgb(165, 206, 255);
+    border-right: 12px solid rgb(165, 206, 255);
+    border-collapse: collapse;
+    max-width: 95vw;
+    width: auto;
+}
+
+th, td {
+    color: white;
+    padding: 5px;
+    font-size: clamp(10pt, 2vw, 18pt);
+    background-color: rgba(0,0,0,0.9);
+    border: 6px solid rgb(165, 206, 255);
+    text-align: center;
+}
+
+.answer-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0,0,0,0.9);
+    clip-path: polygon(
+        50% 0%,
+        80.9% 9.5%,
+        97.6% 34.5%,
+        97.6% 65.5%,
+        80.9% 90.5%,
+        50% 100%,
+        19.1% 90.5%,
+        2.4% 65.5%,
+        2.4% 34.5%,
+        19.1% 9.5%
+    );
+    vertical-align: middle;
+}
+
+.answer-row td {
+    background-color: rgba(161, 104, 5, 0.8);
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.grid-cell {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background-color: white;
+    transition: background-color 0.3s;
+}
+
+.game-over {
+    color: green;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Card flip animation for guess rows */
+.guess-row-flip {
+    animation: cardFlip 0.6s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+@keyframes cardFlip {
+    0% {
+        transform: rotateX(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: rotateX(90deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotateX(0deg);
+        opacity: 1;
+    }
+}
+
+/* Hint reveal animation with green flash */
+.answer-row td.hint-reveal-flip {
+    animation: hintRevealFlip 0.8s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+@keyframes hintRevealFlip {
+    0% {
+        transform: rotateX(0deg);
+        background-color: rgba(161, 104, 5, 0.8);
+    }
+    40% {
+        transform: rotateX(90deg);
+        background-color: rgba(161, 104, 5, 0.8);
+    }
+    50% {
+        transform: rotateX(90deg);
+        background-color: rgba(34, 139, 34, 0.8);
+    }
+    60% {
+        transform: rotateX(0deg);
+        background-color: rgba(34, 139, 34, 0.8);
+    }
+    85% {
+        transform: rotateX(0deg);
+        background-color: rgba(34, 139, 34, 0.8);
+    }
+    100% {
+        transform: rotateX(0deg);
+        background-color: rgba(161, 104, 5, 0.8);
+    }
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+    }
+    
+    .submit-button {
+        width: 50px;
+        height: 50px;
+        font-size: 12pt;
+    }
+    
+    .hint-table {
+        border: 3px rgb(165, 206, 255) solid;
+        border-left: 6px rgb(165, 206, 255) solid;
+        border-right: 6px rgb(165, 206, 255) solid;
+    }
+    
+    .hint-table th,
+    .hint-table td {
+        padding: 3px;
+        font-size: clamp(8pt, 2.5vw, 12pt);
+        border: 3px rgb(165, 206, 255) solid;
+    }
+    
+    table {
+        border: 3px rgb(165, 206, 255) solid;
+        border-left: 6px rgb(165, 206, 255) solid;
+        border-right: 6px rgb(165, 206, 255) solid;
+        font-size: 10pt;
+    }
+    
+    th, td {
+        padding: 3px;
+        font-size: clamp(8pt, 2.5vw, 12pt);
+        border: 3px rgb(165, 206, 255) solid;
+       
+    }
+    .hint-table table{
+        border: 3px rgb(165, 206, 255) solid;
+        border-left: 6px rgb(165, 206, 255) solid;
+        border-right: 6px rgb(165, 206, 255) solid;
+        font-size: 10pt;
+    }
+
+    .hint-table th, .hint-table td {
+        padding: 3px;
+        font-size: clamp(8pt, 2.5vw, 12pt);
+        border: 3px rgb(165, 206, 255) solid;
+    }
+
+    .game-board,
+    .random-game-board {
+        padding: 0px;
+        padding-top: 300px;
+
+    }
+    table {
+     width: auto;
+     margin-left: 0px;
+     margin-right: 0px;
+    }
+    
+}

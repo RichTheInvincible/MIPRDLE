@@ -1,1 +1,4 @@
 node_modules
+
+# AI coding agent instructions (local only)
+.github/copilot-instructions.md

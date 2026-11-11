@@ -1,0 +1,148 @@
+.title-group {
+  position: absolute;
+  top: -75px;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10001;
+}
+
+.title-circle-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background-image: url('../images/assets/SPLASH_CIRCLE.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
+.game-title {
+  color: #fff;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  white-space: pre-line;
+  min-height: 8rem;
+  text-align: center;
+  transform: translate(-50%, -50%) rotate(-5deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.game-title span:first-child {
+  color: rgb(255, 255, 255);
+  font-size: 25pt;
+  display: block;
+}
+
+.game-title span:last-child {
+  font-weight: bold;
+  font-size: 45pt;
+  display: inline-block;
+  transform: skewX(-10deg);
+}
+
+/* Splash page specific title styling */
+.splash-title {
+  color: #fff;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  white-space: pre-line;
+  min-height: 8rem;
+  text-align: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-5deg);
+}
+
+.splash-title span:first-child {
+  color: rgb(255, 255, 255);
+  font-size: 25pt;
+}
+
+.splash-title span:last-child {
+  font-weight: bold;
+  font-size: 45pt;
+  display: inline-block;
+  transform: skewX(-10deg);
+}
+
+/* Slide in animation when hovering over buttons */
+.splash-container:has(.splash-btn:hover) .splash-title {
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, -50%) rotate(-5deg) translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-5deg) translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Title image (formerly TiltCard) */
+.title-image {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-5deg);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+/* Slide in animation for image when hovering over buttons */
+.splash-container:has(.splash-btn:hover) .title-image {
+  animation: slideInImage 0.3s ease forwards;
+}
+
+@keyframes slideInImage {
+  from {
+    transform: translate(-50%, -50%) rotate(-5deg) translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-8deg) translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+ .title-group {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10001;
+}
+.splash-title span:first-child {
+  font-size: 14pt;
+}
+
+.splash-title span:last-child {
+  font-size: 25pt;
+}
+.game-title span:first-child {
+  font-size: 14pt;
+}
+
+.game-title span:last-child {
+  font-size: 25pt;
+}
+}

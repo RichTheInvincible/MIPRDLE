@@ -8,4 +8,5 @@ export interface GameState {
 export interface Puzzle {
     word: string;
     hints: string[];
+    Season: string;  // Add this line
 }

@@ -10,14 +10,8 @@ h1 {
     text-align: center;
     margin: 20px 0;
 }
-
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    justify-content: center;
-    margin: 20px auto;
-    max-width: 600px;
+pre {
+    user-select: text;
 }
 
 .cell {
